@@ -99,7 +99,7 @@ public class Home extends Activity {
 
     private static boolean mWallpaperChecked;
     private static ArrayList<ApplicationInfo> mApplications;
-    //private static LinkedList<ApplicationInfo> mFavorites;
+    private static LinkedList<ApplicationInfo> mFavorites;
 
     private final BroadcastReceiver mWallpaperReceiver = new WallpaperIntentReceiver();
     private final BroadcastReceiver mApplicationsReceiver = new ApplicationsIntentReceiver();
@@ -115,7 +115,7 @@ public class Home extends Activity {
     private boolean mBackDown; 
     
     
-    //private View mShowApplications;
+    private View mShowApplications;
     private CheckBox mShowApplicationsCheck;
 
     //private ApplicationsStackLayout mApplicationsStack;
@@ -134,14 +134,14 @@ public class Home extends Activity {
         registerIntentReceivers();
 
         //setDefaultWallpaper();
-        getWindow().setBackgroundDrawableResource(R.drawable.bg_android);
+        getWindow().setBackgroundDrawableResource(R.drawable.bg_android);					// Set static background
 
         loadApplications(true);
 
         bindApplications();
         //bindFavorites(true);
         //bindRecents();
-        bindButtons();
+        //bindButtons();
 
         mGridEntry = AnimationUtils.loadAnimation(this, R.anim.grid_entry);
         mGridExit = AnimationUtils.loadAnimation(this, R.anim.grid_exit);
@@ -212,21 +212,23 @@ public class Home extends Activity {
     /**
      * Creates a new appplications adapter for the grid view and registers it.
      */
+    
     private void bindApplications() {
         if (mGrid == null) {
             mGrid = (GridView) findViewById(R.id.all_apps);
         }
         mGrid.setAdapter(new ApplicationsAdapter(this, mApplications));
         mGrid.setSelection(0);
-
-//        if (mApplicationsStack == null) {
-//            mApplicationsStack = (ApplicationsStackLayout) findViewById(R.id.faves_and_recents);
-//        }
+/*
+        if (mApplicationsStack == null) {
+            mApplicationsStack = (ApplicationsStackLayout) findViewById(R.id.faves_and_recents);
+        }*/
     }
 
     /**
      * Binds actions to the various buttons.
      */
+    
     private void bindButtons() {
 //        mShowApplications = findViewById(R.id.show_all_apps);
 //        mShowApplications.setOnClickListener(new ShowApplications());
@@ -268,7 +270,7 @@ public class Home extends Activity {
             } else {
                 mFavorites.clear();
             }
-            //mApplicationsStack.setFavorites(mFavorites);            
+            mApplicationsStack.setFavorites(mFavorites);            
             
             FileReader favReader;
 
@@ -322,9 +324,9 @@ public class Home extends Activity {
             }
         }
 
-        //mApplicationsStack.setFavorites(mFavorites);
+        mApplicationsStack.setFavorites(mFavorites);
     }
-
+*/
     private static void beginDocument(XmlPullParser parser, String firstElementName)
             throws XmlPullParserException, IOException {
 
@@ -351,7 +353,7 @@ public class Home extends Activity {
             // Empty
         }
     }
-*/
+
     /**
      * Refreshes the recently launched applications stacked over the favorites. The number
      * of recents depends on how many favorites are present.
@@ -375,14 +377,14 @@ public class Home extends Activity {
                 ApplicationInfo info = getApplicationInfo(manager, intent);
                 if (info != null) {
                     info.intent = intent;
-//                    if (!mFavorites.contains(info)) {
-//                        recents.add(info);
-//                    }
+                    if (!mFavorites.contains(info)) {
+                        recents.add(info);
+                    }
                 }
             }
         }
 
-        //mApplicationsStack.setRecents(recents);
+        mApplicationsStack.setRecents(recents);
     }
 */
     private static ApplicationInfo getApplicationInfo(PackageManager manager, Intent intent) {
@@ -443,7 +445,7 @@ public class Home extends Activity {
 
         return super.dispatchKeyEvent(event);
     }
-    /*
+/*    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
@@ -606,7 +608,7 @@ public class Home extends Activity {
         mGridExit.setAnimationListener(new HideGrid());
         mGrid.startAnimation(mGridExit);
         mGrid.setVisibility(View.INVISIBLE);
-//        mShowApplications.requestFocus();
+        mShowApplications.requestFocus();
 
         // This enables a layout animation; if you uncomment this code, you need to
         // comment the line mGrid.startAnimation() above

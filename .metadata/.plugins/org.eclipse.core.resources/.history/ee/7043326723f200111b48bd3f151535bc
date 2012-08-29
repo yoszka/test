@@ -99,7 +99,7 @@ public class Home extends Activity {
 
     private static boolean mWallpaperChecked;
     private static ArrayList<ApplicationInfo> mApplications;
-    //private static LinkedList<ApplicationInfo> mFavorites;
+    private static LinkedList<ApplicationInfo> mFavorites;
 
     private final BroadcastReceiver mWallpaperReceiver = new WallpaperIntentReceiver();
     private final BroadcastReceiver mApplicationsReceiver = new ApplicationsIntentReceiver();
@@ -139,8 +139,8 @@ public class Home extends Activity {
         loadApplications(true);
 
         bindApplications();
-        //bindFavorites(true);
-        //bindRecents();
+        bindFavorites(true);
+        bindRecents();
         bindButtons();
 
         mGridEntry = AnimationUtils.loadAnimation(this, R.anim.grid_entry);
@@ -175,7 +175,7 @@ public class Home extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        //bindRecents();
+        bindRecents();
     }
     
     @Override
@@ -259,7 +259,6 @@ public class Home extends Activity {
      * Refreshes the favorite applications stacked over the all apps button.
      * The number of favorites depends on the user.
      */
-    /*
     private void bindFavorites(boolean isLaunching) {
         if (!isLaunching || mFavorites == null) {
 
@@ -351,12 +350,11 @@ public class Home extends Activity {
             // Empty
         }
     }
-*/
+
     /**
      * Refreshes the recently launched applications stacked over the favorites. The number
      * of recents depends on how many favorites are present.
      */
-    /*
     private void bindRecents() {
         final PackageManager manager = getPackageManager();
         final ActivityManager tasksManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
@@ -375,16 +373,16 @@ public class Home extends Activity {
                 ApplicationInfo info = getApplicationInfo(manager, intent);
                 if (info != null) {
                     info.intent = intent;
-//                    if (!mFavorites.contains(info)) {
-//                        recents.add(info);
-//                    }
+                    if (!mFavorites.contains(info)) {
+                        recents.add(info);
+                    }
                 }
             }
         }
 
         //mApplicationsStack.setRecents(recents);
     }
-*/
+
     private static ApplicationInfo getApplicationInfo(PackageManager manager, Intent intent) {
         final ResolveInfo resolveInfo = manager.resolveActivity(intent, 0);
 
@@ -633,8 +631,8 @@ public class Home extends Activity {
         public void onReceive(Context context, Intent intent) {
             loadApplications(false);
             bindApplications();
-            //bindRecents();
-            //bindFavorites(false);
+            bindRecents();
+            bindFavorites(false);
         }
     }
 

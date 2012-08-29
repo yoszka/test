@@ -140,7 +140,7 @@ public class Home extends Activity {
 
         bindApplications();
         //bindFavorites(true);
-        //bindRecents();
+        bindRecents();
         bindButtons();
 
         mGridEntry = AnimationUtils.loadAnimation(this, R.anim.grid_entry);
@@ -175,7 +175,7 @@ public class Home extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        //bindRecents();
+        bindRecents();
     }
     
     @Override
@@ -356,7 +356,6 @@ public class Home extends Activity {
      * Refreshes the recently launched applications stacked over the favorites. The number
      * of recents depends on how many favorites are present.
      */
-    /*
     private void bindRecents() {
         final PackageManager manager = getPackageManager();
         final ActivityManager tasksManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
@@ -384,7 +383,7 @@ public class Home extends Activity {
 
         //mApplicationsStack.setRecents(recents);
     }
-*/
+
     private static ApplicationInfo getApplicationInfo(PackageManager manager, Intent intent) {
         final ResolveInfo resolveInfo = manager.resolveActivity(intent, 0);
 
@@ -633,7 +632,7 @@ public class Home extends Activity {
         public void onReceive(Context context, Intent intent) {
             loadApplications(false);
             bindApplications();
-            //bindRecents();
+            bindRecents();
             //bindFavorites(false);
         }
     }

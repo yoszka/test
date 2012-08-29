@@ -99,7 +99,7 @@ public class Home extends Activity {
 
     private static boolean mWallpaperChecked;
     private static ArrayList<ApplicationInfo> mApplications;
-    //private static LinkedList<ApplicationInfo> mFavorites;
+    private static LinkedList<ApplicationInfo> mFavorites;
 
     private final BroadcastReceiver mWallpaperReceiver = new WallpaperIntentReceiver();
     private final BroadcastReceiver mApplicationsReceiver = new ApplicationsIntentReceiver();
@@ -115,7 +115,7 @@ public class Home extends Activity {
     private boolean mBackDown; 
     
     
-    //private View mShowApplications;
+    private View mShowApplications;
     private CheckBox mShowApplicationsCheck;
 
     //private ApplicationsStackLayout mApplicationsStack;
@@ -139,8 +139,8 @@ public class Home extends Activity {
         loadApplications(true);
 
         bindApplications();
-        //bindFavorites(true);
-        //bindRecents();
+        bindFavorites(true);
+        bindRecents();
         bindButtons();
 
         mGridEntry = AnimationUtils.loadAnimation(this, R.anim.grid_entry);
@@ -175,7 +175,7 @@ public class Home extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        //bindRecents();
+        bindRecents();
     }
     
     @Override
@@ -228,9 +228,9 @@ public class Home extends Activity {
      * Binds actions to the various buttons.
      */
     private void bindButtons() {
-//        mShowApplications = findViewById(R.id.show_all_apps);
-//        mShowApplications.setOnClickListener(new ShowApplications());
-//        mShowApplicationsCheck = (CheckBox) findViewById(R.id.show_all_apps_check);
+        mShowApplications = findViewById(R.id.show_all_apps);
+        mShowApplications.setOnClickListener(new ShowApplications());
+        mShowApplicationsCheck = (CheckBox) findViewById(R.id.show_all_apps_check);
 
         mGrid.setOnItemClickListener(new ApplicationLauncher());
     }
@@ -238,7 +238,6 @@ public class Home extends Activity {
     /**
      * When no wallpaper was manually set, a default wallpaper is used instead.
      */
-    /*
     private void setDefaultWallpaper() {
         if (!mWallpaperChecked) {
             Drawable wallpaper = peekWallpaper();
@@ -254,12 +253,11 @@ public class Home extends Activity {
             mWallpaperChecked = true;
         }
     }
-*/
+
     /**
      * Refreshes the favorite applications stacked over the all apps button.
      * The number of favorites depends on the user.
      */
-    /*
     private void bindFavorites(boolean isLaunching) {
         if (!isLaunching || mFavorites == null) {
 
@@ -351,12 +349,11 @@ public class Home extends Activity {
             // Empty
         }
     }
-*/
+
     /**
      * Refreshes the recently launched applications stacked over the favorites. The number
      * of recents depends on how many favorites are present.
      */
-    /*
     private void bindRecents() {
         final PackageManager manager = getPackageManager();
         final ActivityManager tasksManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
@@ -375,16 +372,16 @@ public class Home extends Activity {
                 ApplicationInfo info = getApplicationInfo(manager, intent);
                 if (info != null) {
                     info.intent = intent;
-//                    if (!mFavorites.contains(info)) {
-//                        recents.add(info);
-//                    }
+                    if (!mFavorites.contains(info)) {
+                        recents.add(info);
+                    }
                 }
             }
         }
 
         //mApplicationsStack.setRecents(recents);
     }
-*/
+
     private static ApplicationInfo getApplicationInfo(PackageManager manager, Intent intent) {
         final ResolveInfo resolveInfo = manager.resolveActivity(intent, 0);
 
@@ -443,7 +440,7 @@ public class Home extends Activity {
 
         return super.dispatchKeyEvent(event);
     }
-    /*
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
@@ -479,7 +476,7 @@ public class Home extends Activity {
         final Intent pickWallpaper = new Intent(Intent.ACTION_SET_WALLPAPER);
         startActivity(Intent.createChooser(pickWallpaper, getString(R.string.menu_wallpaper)));
     }
-*/
+
     /**
      * Loads the list of installed applications in mApplications.
      */
@@ -606,7 +603,7 @@ public class Home extends Activity {
         mGridExit.setAnimationListener(new HideGrid());
         mGrid.startAnimation(mGridExit);
         mGrid.setVisibility(View.INVISIBLE);
-//        mShowApplications.requestFocus();
+        mShowApplications.requestFocus();
 
         // This enables a layout animation; if you uncomment this code, you need to
         // comment the line mGrid.startAnimation() above
@@ -633,8 +630,8 @@ public class Home extends Activity {
         public void onReceive(Context context, Intent intent) {
             loadApplications(false);
             bindApplications();
-            //bindRecents();
-            //bindFavorites(false);
+            bindRecents();
+            bindFavorites(false);
         }
     }
 
