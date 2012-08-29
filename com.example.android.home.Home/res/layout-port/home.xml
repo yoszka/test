@@ -42,7 +42,7 @@
         android:visibility="visible" />
 
     <!-- Favorites and Recents -->
-    <!--com.example.android.home.ApplicationsStackLayout android:id="@+id/faves_and_recents"
+    <!-- com.example.android.home.ApplicationsStackLayout android:id="@+id/faves_and_recents"
         home:stackOrientation="horizontal"
         home:marginLeft="1dip"
         home:marginRight="1dip"
