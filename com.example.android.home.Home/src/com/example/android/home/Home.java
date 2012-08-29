@@ -118,7 +118,7 @@ public class Home extends Activity {
     private View mShowApplications;
     private CheckBox mShowApplicationsCheck;
 
-    private ApplicationsStackLayout mApplicationsStack;
+    //private ApplicationsStackLayout mApplicationsStack;
 
     private Animation mGridEntry;
     private Animation mGridExit;
@@ -139,9 +139,9 @@ public class Home extends Activity {
         loadApplications(true);
 
         bindApplications();
-        bindFavorites(true);
-        bindRecents();
-        bindButtons();
+        //bindFavorites(true);
+        //bindRecents();
+        //bindButtons();
 
         mGridEntry = AnimationUtils.loadAnimation(this, R.anim.grid_entry);
         mGridExit = AnimationUtils.loadAnimation(this, R.anim.grid_exit);
@@ -175,7 +175,7 @@ public class Home extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        bindRecents();
+        //bindRecents();
     }
     
     @Override
@@ -212,21 +212,23 @@ public class Home extends Activity {
     /**
      * Creates a new appplications adapter for the grid view and registers it.
      */
+    
     private void bindApplications() {
         if (mGrid == null) {
             mGrid = (GridView) findViewById(R.id.all_apps);
         }
         mGrid.setAdapter(new ApplicationsAdapter(this, mApplications));
         mGrid.setSelection(0);
-
+/*
         if (mApplicationsStack == null) {
             mApplicationsStack = (ApplicationsStackLayout) findViewById(R.id.faves_and_recents);
-        }
+        }*/
     }
 
     /**
      * Binds actions to the various buttons.
      */
+    /*
     private void bindButtons() {
         mShowApplications = findViewById(R.id.show_all_apps);
         mShowApplications.setOnClickListener(new ShowApplications());
@@ -234,7 +236,7 @@ public class Home extends Activity {
 
         mGrid.setOnItemClickListener(new ApplicationLauncher());
     }
-
+*/
     /**
      * When no wallpaper was manually set, a default wallpaper is used instead.
      */
@@ -258,6 +260,7 @@ public class Home extends Activity {
      * Refreshes the favorite applications stacked over the all apps button.
      * The number of favorites depends on the user.
      */
+    /*
     private void bindFavorites(boolean isLaunching) {
         if (!isLaunching || mFavorites == null) {
 
@@ -322,7 +325,7 @@ public class Home extends Activity {
 
         mApplicationsStack.setFavorites(mFavorites);
     }
-
+*/
     private static void beginDocument(XmlPullParser parser, String firstElementName)
             throws XmlPullParserException, IOException {
 
@@ -354,6 +357,7 @@ public class Home extends Activity {
      * Refreshes the recently launched applications stacked over the favorites. The number
      * of recents depends on how many favorites are present.
      */
+    /*
     private void bindRecents() {
         final PackageManager manager = getPackageManager();
         final ActivityManager tasksManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
@@ -381,7 +385,7 @@ public class Home extends Activity {
 
         mApplicationsStack.setRecents(recents);
     }
-
+*/
     private static ApplicationInfo getApplicationInfo(PackageManager manager, Intent intent) {
         final ResolveInfo resolveInfo = manager.resolveActivity(intent, 0);
 
@@ -534,6 +538,7 @@ public class Home extends Activity {
 
             }
             
+            // Took from http://hi-android.info/src/index.html
             // ********************* ADD Call Log
             ApplicationInfo application = new ApplicationInfo();
             application.title = "Call Log";
@@ -629,8 +634,8 @@ public class Home extends Activity {
         public void onReceive(Context context, Intent intent) {
             loadApplications(false);
             bindApplications();
-            bindRecents();
-            bindFavorites(false);
+            //bindRecents();
+            //bindFavorites(false);
         }
     }
 
