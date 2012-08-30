@@ -1,0 +1,1 @@
+Wykoszone wszytsko co nie potrzebne z projektu

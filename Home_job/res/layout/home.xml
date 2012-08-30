@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- All applications on the top side of the screen -->
+
+    <GridView
+        android:id="@+id/all_apps"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="0.9"
+        android:alwaysDrawnWithCache="true"
+        android:background="@android:color/transparent"
+        android:columnWidth="105dp"
+        android:drawSelectorOnTop="false"
+        android:listSelector="@drawable/grid_selector"
+        android:numColumns="2"
+        android:paddingTop="20dp"
+        android:persistentDrawingCache="animation|scrolling"
+        android:scrollbars="none"
+        android:stackFromBottom="false"
+        android:stretchMode="spacingWidthUniform"
+        android:verticalSpacing="45dp"
+        android:visibility="visible" />
+
+
+    <ImageButton
+        android:id="@+id/imageButton1"
+        android:layout_width="54dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="0.1"
+        android:onClick="allApplicationButton"
+        android:contentDescription="@string/show_all_app"
+        android:src="@android:drawable/ic_dialog_dialer" />
+    
+
+</LinearLayout>
