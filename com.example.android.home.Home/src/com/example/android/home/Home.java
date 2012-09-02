@@ -17,6 +17,7 @@
 package com.example.android.home;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.SearchManager;
@@ -49,6 +50,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
@@ -58,6 +60,7 @@ import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.FileReader;
@@ -70,6 +73,7 @@ import java.util.List;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
+
 
 public class Home extends Activity {
     /**
@@ -126,7 +130,7 @@ public class Home extends Activity {
     private Animation mGridEntry;
     private Animation mGridExit;
     
-    //static ApplicationsAdapter appAdapter;
+    private ViewPager myPager;
     
     @Override
     public void onCreate(Bundle icicle) {
@@ -147,15 +151,15 @@ public class Home extends Activity {
         bindApplications();
         //bindFavorites(true);
         //bindRecents();
-        bindButtons();
+        //bindButtons();
 
         mGridEntry = AnimationUtils.loadAnimation(this, R.anim.grid_entry);
         mGridExit = AnimationUtils.loadAnimation(this, 	R.anim.grid_exit);
         
         
         // Set up page adapter
-        HomePagerAdapter adapter = new HomePagerAdapter(new ApplicationsAdapter(this, mApplications));
-        ViewPager myPager = (ViewPager) findViewById(R.id.three_panel_pager);
+        HomePagerAdapter adapter = new HomePagerAdapter(getApplicationContext() ,new ApplicationsAdapter(this, mApplications));
+        myPager = (ViewPager) findViewById(R.id.three_panel_pager);
         myPager.setAdapter(adapter);
         myPager.setCurrentItem(HomePagerAdapter.SCREEN_CENTER);        
     }
@@ -246,16 +250,16 @@ public class Home extends Activity {
 //        }
     }
 
-    /**
-     * Binds actions to the various buttons.
-     */
-    private void bindButtons() {
-//        mShowApplications = findViewById(R.id.show_all_apps);
-//        mShowApplications.setOnClickListener(new ShowApplications());
-//        mShowApplicationsCheck = (CheckBox) findViewById(R.id.show_all_apps_check);
-
-        mGrid.setOnItemClickListener(new ApplicationLauncher());
-    }
+//    /**
+//     * Binds actions to the various buttons.
+//     */
+//    private void bindButtons() {
+////        mShowApplications = findViewById(R.id.show_all_apps);
+////        mShowApplications.setOnClickListener(new ShowApplications());
+////        mShowApplicationsCheck = (CheckBox) findViewById(R.id.show_all_apps_check);
+//
+//        mGrid.setOnItemClickListener(new ApplicationLauncher());
+//    }
 
     /**
      * When no wallpaper was manually set, a default wallpaper is used instead.
@@ -437,13 +441,21 @@ public class Home extends Activity {
     @SuppressLint({ "NewApi", "NewApi" })
 	@Override
     public boolean dispatchKeyEvent(KeyEvent event) {
+    	Toast.makeText(getApplicationContext(), "dispatchKeyEvent", Toast.LENGTH_SHORT).show();
+    	
         if (event.getAction() == KeyEvent.ACTION_DOWN) {
             switch (event.getKeyCode()) {
                 case KeyEvent.KEYCODE_BACK:
                     mBackDown = true;
+                    Toast.makeText(getApplicationContext(), "BACK 1", Toast.LENGTH_SHORT).show();
+                    myPager.setCurrentItem(HomePagerAdapter.SCREEN_CENTER);
                     return true;
                 case KeyEvent.KEYCODE_HOME:
                     mHomeDown = true;
+                	//myPager.setCurrentItem(HomePagerAdapter.SCREEN_CENTER); 
+                	//myPager.invalidate();
+                	Toast.makeText(getApplicationContext(), "HOME", Toast.LENGTH_SHORT).show();
+                	Log.e("PUSH", "Home 2");
                     return true;
             }
         } else if (event.getAction() == KeyEvent.ACTION_UP) {
@@ -451,12 +463,18 @@ public class Home extends Activity {
                 case KeyEvent.KEYCODE_BACK:
                     if (!event.isCanceled()) {
                         // Do BACK behavior.
+                    	Toast.makeText(getApplicationContext(), "BACK 2", Toast.LENGTH_SHORT).show();
                     }
                     mBackDown = true;
                     return true;
                 case KeyEvent.KEYCODE_HOME:
+                	Toast.makeText(getApplicationContext(), "HOME", Toast.LENGTH_SHORT).show();
+                	Log.e("PUSH", "Home 2");                	
                     if (!event.isCanceled()) {
                         // Do HOME behavior.
+                    	//myPager.setCurrentItem(HomePagerAdapter.SCREEN_CENTER); 
+                    	Toast.makeText(getApplicationContext(), "HOME", Toast.LENGTH_SHORT).show();
+                    	Log.e("PUSH", "Home 2");
                     }
                     mHomeDown = true;
                     return true;
@@ -465,6 +483,21 @@ public class Home extends Activity {
 
         return super.dispatchKeyEvent(event);
     }
+    
+    
+    
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+    	Toast.makeText(this, "onKeyDown", Toast.LENGTH_LONG).show();  
+        if ((keyCode == KeyEvent.KEYCODE_HOME)) {
+            Toast.makeText(this, "You pressed the home button!", Toast.LENGTH_LONG).show();                     
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+        
+    
+    
     /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -785,9 +818,10 @@ public class Home extends Activity {
     /**
      * Starts the selected activity/application in the grid view.
      */
-    private class ApplicationLauncher implements AdapterView.OnItemClickListener {
+    class ApplicationLauncher implements AdapterView.OnItemClickListener {
         public void onItemClick(AdapterView parent, View v, int position, long id) {
             ApplicationInfo app = (ApplicationInfo) parent.getItemAtPosition(position);
+            Log.e("ApplicationLauncher", app.intent+"");
             startActivity(app.intent);
         }
     }

@@ -9,10 +9,11 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 public class HomePagerAdapter extends PagerAdapter {
+	private Context context;
 	private ApplicationsAdapter appAdapter;
 	private final static int NUMBER_OF_SCREENS 	= 3;
 	final static int SCREEN_LEFT 		= 0;
@@ -28,11 +29,22 @@ public class HomePagerAdapter extends PagerAdapter {
 	 * Public constructor get in argument ApplicationsAdapter to inflate applications grid in center screen
 	 * @param appAdapter - adapter for applications grid
 	 */
-	HomePagerAdapter(ApplicationsAdapter appAdapter)	// On create object set adapter for main screen applications GridView
+	HomePagerAdapter(Context context, ApplicationsAdapter appAdapter)	// On create object set adapter for main screen applications GridView
 	{
+		this.context 	= context;
 		this.appAdapter = appAdapter;
 	}
 	
+    /**
+     * Starts the selected activity/application in the grid view.
+     */
+    class ApplicationLauncher implements AdapterView.OnItemClickListener {
+        public void onItemClick(AdapterView parent, View v, int position, long id) {
+            ApplicationInfo app = (ApplicationInfo) parent.getItemAtPosition(position);
+            Log.e("ApplicationLauncher", app.intent+"");
+            context.startActivity(app.intent);            
+        }
+    }	
 
 	public Object instantiateItem(View collection, int position) {
 		
@@ -66,7 +78,8 @@ public class HomePagerAdapter extends PagerAdapter {
 			if(null != gridView)							// if retrieve will success
 			{
 				gridView.setAdapter(this.appAdapter);
-				gridView.setSelection(0);
+				gridView.setSelection(0);				
+				gridView.setOnItemClickListener(new ApplicationLauncher() );
 			}
 		}
 
