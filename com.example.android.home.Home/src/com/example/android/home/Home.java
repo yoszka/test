@@ -40,6 +40,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.PaintDrawable;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.util.Xml;
 import android.view.KeyEvent;
@@ -55,6 +56,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -105,6 +107,7 @@ public class Home extends Activity {
     private final BroadcastReceiver mApplicationsReceiver = new ApplicationsIntentReceiver();
 
     private GridView mGrid;
+    //static GridView mGrid;
 
     private LayoutAnimationController mShowLayoutAnimation;
     private LayoutAnimationController mHideLayoutAnimation;
@@ -123,6 +126,8 @@ public class Home extends Activity {
     private Animation mGridEntry;
     private Animation mGridExit;
     
+    //static ApplicationsAdapter appAdapter;
+    
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -130,6 +135,7 @@ public class Home extends Activity {
         setDefaultKeyMode(DEFAULT_KEYS_SEARCH_LOCAL);
 
         setContentView(R.layout.home);
+        //setContentView(R.layout.home_main_panel);
 
         registerIntentReceivers();
 
@@ -144,7 +150,14 @@ public class Home extends Activity {
         bindButtons();
 
         mGridEntry = AnimationUtils.loadAnimation(this, R.anim.grid_entry);
-        mGridExit = AnimationUtils.loadAnimation(this, R.anim.grid_exit);
+        mGridExit = AnimationUtils.loadAnimation(this, 	R.anim.grid_exit);
+        
+        
+        // Set up page adapter
+        HomePagerAdapter adapter = new HomePagerAdapter(new ApplicationsAdapter(this, mApplications));
+        ViewPager myPager = (ViewPager) findViewById(R.id.three_panel_pager);
+        myPager.setAdapter(adapter);
+        myPager.setCurrentItem(HomePagerAdapter.SCREEN_CENTER);        
     }
 
     @Override
@@ -214,9 +227,18 @@ public class Home extends Activity {
      */
     private void bindApplications() {
         if (mGrid == null) {
-            mGrid = (GridView) findViewById(R.id.all_apps);
+        	
+        	
+        	//final LayoutInflater layoutInflater = getLayoutInflater();
+        	//View mainPanel = layoutInflater.inflate(R.layout.home_main_panel, null);
+        	
+        	//mGrid = (GridView) mainPanel.findViewById(R.id.all_apps);
+        	mGrid = new GridView(this);
+        	
+            //mGrid = (GridView) findViewById(R.id.all_apps);
         }
-        mGrid.setAdapter(new ApplicationsAdapter(this, mApplications));
+        //mGrid.setAdapter(new ApplicationsAdapter(this, mApplications));
+        //mGrid.setAdapter(new ApplicationsAdapter(mGrid.getContext(), mApplications));
         mGrid.setSelection(0);
 
 //        if (mApplicationsStack == null) {
@@ -641,7 +663,7 @@ public class Home extends Activity {
     /**
      * GridView adapter to show the list of all installed applications.
      */
-    private class ApplicationsAdapter extends ArrayAdapter<ApplicationInfo> {
+    class ApplicationsAdapter extends ArrayAdapter<ApplicationInfo> {
         private Rect mOldBounds = new Rect();
 
         public ApplicationsAdapter(Context context, ArrayList<ApplicationInfo> apps) {
