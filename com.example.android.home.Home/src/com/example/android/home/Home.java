@@ -56,6 +56,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.support.v4.view.ViewPager;
 
 import java.io.IOException;
 import java.io.FileReader;
@@ -123,6 +124,9 @@ public class Home extends Activity {
     private Animation mGridEntry;
     private Animation mGridExit;
     
+    private ViewPager myPager;
+    
+    
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -145,6 +149,12 @@ public class Home extends Activity {
 
         mGridEntry = AnimationUtils.loadAnimation(this, R.anim.grid_entry);
         mGridExit = AnimationUtils.loadAnimation(this, R.anim.grid_exit);
+        
+        // Set up page adapter
+        HomePagerAdapter adapter = new HomePagerAdapter(getApplicationContext() ,new ApplicationsAdapter(this, mApplications));
+        myPager = (ViewPager) findViewById(R.id.three_panel_pager);
+        myPager.setAdapter(adapter);
+        myPager.setCurrentItem(HomePagerAdapter.SCREEN_CENTER);        
     }
 
     @Override
