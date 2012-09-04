@@ -24,6 +24,15 @@
      own application, the package name must be changed from "com.example.*"
      to come from a domain that you own or have control over. -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<<<<<<< HEAD
+		package="com.example.android.home">
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.GET_TASKS"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.EXPAND_STATUS_BAR"/>
+=======
 		package="com.gigaset.home">
     <uses-permission android:name="android.permission.CALL_PHONE"/>
     <uses-permission android:name="android.permission.GET_TASKS"/>
@@ -32,6 +41,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.EXPAND_STATUS_BAR"/>
     <uses-sdk android:targetSdkVersion="14" android:minSdkVersion="10"/>
+>>>>>>> 74bc6dab21bff9c4b4aea038f621bc18561138a1
 
     <application android:label="@string/home_title"
           android:icon="@drawable/ic_launcher_home">
@@ -47,6 +57,17 @@
             </intent-filter>
         </activity>
 
+<<<<<<< HEAD
+        <activity android:name="Wallpaper"
+                android:label="Wallpaper"
+                android:icon="@drawable/bg_android_icon">
+            <intent-filter>
+                <action android:name="android.intent.action.SET_WALLPAPER" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+=======
+>>>>>>> 74bc6dab21bff9c4b4aea038f621bc18561138a1
 
     </application>
 </manifest>

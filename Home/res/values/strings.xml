@@ -16,6 +16,7 @@
 
 <resources>
     <!-- Home -->
+    <string name="show_all_app">Show all applications</string>
     <string name="home_title">Home Sample</string>
     <string name="show_all_apps">All</string>
 
@@ -26,5 +27,6 @@
 
     <!-- Wallpaper -->
     <string name="wallpaper_instructions">Tap picture to set portrait wallpaper</string>
+    <string name="aaa">sss</string>
 </resources>
 
