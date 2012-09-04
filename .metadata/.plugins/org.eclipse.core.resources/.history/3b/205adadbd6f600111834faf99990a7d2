@@ -1,0 +1,8 @@
+package pl.xt.jokii.carserv;
+
+import android.app.Application;
+
+@ReportsCrashes(formKey = "dG83empXa0NwSHhudnk4dS1rRV9FT2c6MQ")
+public class MyApplication extends Application{
+
+}
