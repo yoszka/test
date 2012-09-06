@@ -149,7 +149,7 @@ public class NewEntry extends Activity{
 					 
 					 getContentResolver().insert(CarServProviderMetaData.CarServTableMetaData.CONTENT_URI, args);	
 					 
-					 if((new Connectivity(activity)).isOnline())	// Check for Internet connection
+					 if((new Connectivity(activity)).isOnline())
 					 {
 						 // ******* send via POST **********
 						 StringBuilder str = new StringBuilder();
