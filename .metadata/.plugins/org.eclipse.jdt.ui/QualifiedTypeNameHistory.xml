@@ -17,4 +17,7 @@
 <fullyQualifiedTypeName name="android.content.Intent"/>
 <fullyQualifiedTypeName name="android.widget.Toast"/>
 <fullyQualifiedTypeName name="android.view.WindowManager"/>
+<fullyQualifiedTypeName name="android.app.Application"/>
+<fullyQualifiedTypeName name="org.acra.annotation.ReportsCrashes"/>
+<fullyQualifiedTypeName name="org.acra.ACRA"/>
 </qualifiedTypeNameHistroy>
