@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, Car_servActivity!</string>
+    <string name="app_name">Car_serv</string>
+    <string name="button_add_new">Add new</string>
+    <string name="choose_value">Wybierz typ</string>
+    <string name="delete_dialog_text">Delete?</string>
+    <string name="btn_delete_dialog_ok_label">OK</string>
+    <string name="btn_delete_dialog_cancel_label">Cancel</string>
+    
+    <string-array name="entry_types"> 							<!-- Tablica stringow -->
+        <item >Inne</item>
+        <item >Filtr paliwa</item>
+        <item >Filtr powietrza</item>
+        <item >Filtr pyłków</item>        
+        <item >Klimatyzacja</item>
+        <item >Olej</item>
+        <item >Opony</item>
+        <item >Płyn hamulcowy</item>
+        <item >Przewywomierz</item>        
+        <item >Rozrząd</item>
+    </string-array>    
+
+</resources>

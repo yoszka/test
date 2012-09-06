@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <ScrollView
+      xmlns:android="http://schemas.android.com/apk/res/android"
+      android:id="@+id/scrollView1"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+            
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        
+		    <TextView
+		        android:id="@+id/textView4"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="Type"
+		        android:textAppearance="?android:attr/textAppearanceSmall" 
+		        android:layout_weight="0"/>				
+		
+		
+		    <Spinner
+		        android:id="@+id/spinnerTypeChooser"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:prompt="@string/choose_value" 
+		        android:layout_weight="0"/>
+		
+		    
+		    
+		    <TextView
+		        android:id="@+id/textView2"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="Nagłówek" 
+		        android:layout_weight="0"/>
+		
+		
+		    <EditText
+		        android:id="@+id/editWindowDescription"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:ems="10"
+		        android:layout_weight="0"/>
+		
+		    
+		    
+		    <TextView
+		        android:id="@+id/textView3"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="Przebieg" 
+		        android:layout_weight="0"/>
+		
+				    		
+		    <EditText
+		        android:id="@+id/editMileage"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:ems="10"
+		        android:inputType="numberDecimal" 
+		        android:layout_weight="0"/>
+		
+		    
+		    
+		    <TextView
+		        android:id="@+id/textView1"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="Termin" 
+		        android:layout_weight="0"/>
+				
+		    <DatePicker
+		        android:id="@+id/datePicker1"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="top" 
+		         android:layout_weight="0"/>		
+		    
+		    <LinearLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"
+		        android:layout_marginTop="10dp"
+		        android:orientation="horizontal" >						
+		        <Button
+		            android:id="@+id/buttonOK"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_gravity="bottom"
+		            android:text="OK" />
+		
+		    </LinearLayout> 
+
+
+    </LinearLayout>             
+
+           
+
+ </ScrollView>
+ 

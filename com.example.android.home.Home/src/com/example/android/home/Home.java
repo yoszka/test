@@ -17,6 +17,7 @@
 package com.example.android.home;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.SearchManager;
@@ -40,6 +41,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.PaintDrawable;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.util.Xml;
 import android.view.KeyEvent;
@@ -48,6 +50,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
@@ -55,8 +58,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.support.v4.view.ViewPager;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.FileReader;
@@ -69,6 +73,7 @@ import java.util.List;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
+
 
 public class Home extends Activity {
     /**
@@ -100,12 +105,13 @@ public class Home extends Activity {
 
     private static boolean mWallpaperChecked;
     private static ArrayList<ApplicationInfo> mApplications;
-    private static LinkedList<ApplicationInfo> mFavorites;
+    //private static LinkedList<ApplicationInfo> mFavorites;
 
     private final BroadcastReceiver mWallpaperReceiver = new WallpaperIntentReceiver();
     private final BroadcastReceiver mApplicationsReceiver = new ApplicationsIntentReceiver();
 
     private GridView mGrid;
+    //static GridView mGrid;
 
     private LayoutAnimationController mShowLayoutAnimation;
     private LayoutAnimationController mHideLayoutAnimation;
@@ -116,16 +122,15 @@ public class Home extends Activity {
     private boolean mBackDown; 
     
     
-    private View mShowApplications;
+    //private View mShowApplications;
     private CheckBox mShowApplicationsCheck;
 
-    private ApplicationsStackLayout mApplicationsStack;
+    //private ApplicationsStackLayout mApplicationsStack;
 
     private Animation mGridEntry;
     private Animation mGridExit;
     
     private ViewPager myPager;
-    
     
     @Override
     public void onCreate(Bundle icicle) {
@@ -134,21 +139,23 @@ public class Home extends Activity {
         setDefaultKeyMode(DEFAULT_KEYS_SEARCH_LOCAL);
 
         setContentView(R.layout.home);
+        //setContentView(R.layout.home_main_panel);
 
         registerIntentReceivers();
 
         //setDefaultWallpaper();
-        getWindow().setBackgroundDrawableResource(R.drawable.bg_android);					// Set static background
+        getWindow().setBackgroundDrawableResource(R.drawable.bg_android);
 
         loadApplications(true);
 
         bindApplications();
-        bindFavorites(true);
-        bindRecents();
-        bindButtons();
+        //bindFavorites(true);
+        //bindRecents();
+        //bindButtons();
 
         mGridEntry = AnimationUtils.loadAnimation(this, R.anim.grid_entry);
-        mGridExit = AnimationUtils.loadAnimation(this, R.anim.grid_exit);
+        mGridExit = AnimationUtils.loadAnimation(this, 	R.anim.grid_exit);
+        
         
         // Set up page adapter
         HomePagerAdapter adapter = new HomePagerAdapter(getApplicationContext() ,new ApplicationsAdapter(this, mApplications));
@@ -185,7 +192,7 @@ public class Home extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        bindRecents();
+        //bindRecents();
     }
     
     @Override
@@ -224,30 +231,40 @@ public class Home extends Activity {
      */
     private void bindApplications() {
         if (mGrid == null) {
-            mGrid = (GridView) findViewById(R.id.all_apps);
+        	
+        	
+        	//final LayoutInflater layoutInflater = getLayoutInflater();
+        	//View mainPanel = layoutInflater.inflate(R.layout.home_main_panel, null);
+        	
+        	//mGrid = (GridView) mainPanel.findViewById(R.id.all_apps);
+        	mGrid = new GridView(this);
+        	
+            //mGrid = (GridView) findViewById(R.id.all_apps);
         }
-        mGrid.setAdapter(new ApplicationsAdapter(this, mApplications));
+        //mGrid.setAdapter(new ApplicationsAdapter(this, mApplications));
+        //mGrid.setAdapter(new ApplicationsAdapter(mGrid.getContext(), mApplications));
         mGrid.setSelection(0);
 
-        if (mApplicationsStack == null) {
-            mApplicationsStack = (ApplicationsStackLayout) findViewById(R.id.faves_and_recents);
-        }
+//        if (mApplicationsStack == null) {
+//            mApplicationsStack = (ApplicationsStackLayout) findViewById(R.id.faves_and_recents);
+//        }
     }
 
-    /**
-     * Binds actions to the various buttons.
-     */
-    private void bindButtons() {
-        mShowApplications = findViewById(R.id.show_all_apps);
-        mShowApplications.setOnClickListener(new ShowApplications());
-        mShowApplicationsCheck = (CheckBox) findViewById(R.id.show_all_apps_check);
-
-        mGrid.setOnItemClickListener(new ApplicationLauncher());
-    }
+//    /**
+//     * Binds actions to the various buttons.
+//     */
+//    private void bindButtons() {
+////        mShowApplications = findViewById(R.id.show_all_apps);
+////        mShowApplications.setOnClickListener(new ShowApplications());
+////        mShowApplicationsCheck = (CheckBox) findViewById(R.id.show_all_apps_check);
+//
+//        mGrid.setOnItemClickListener(new ApplicationLauncher());
+//    }
 
     /**
      * When no wallpaper was manually set, a default wallpaper is used instead.
      */
+    /*
     private void setDefaultWallpaper() {
         if (!mWallpaperChecked) {
             Drawable wallpaper = peekWallpaper();
@@ -263,11 +280,12 @@ public class Home extends Activity {
             mWallpaperChecked = true;
         }
     }
-
+*/
     /**
      * Refreshes the favorite applications stacked over the all apps button.
      * The number of favorites depends on the user.
      */
+    /*
     private void bindFavorites(boolean isLaunching) {
         if (!isLaunching || mFavorites == null) {
 
@@ -276,7 +294,7 @@ public class Home extends Activity {
             } else {
                 mFavorites.clear();
             }
-            mApplicationsStack.setFavorites(mFavorites);            
+            //mApplicationsStack.setFavorites(mFavorites);            
             
             FileReader favReader;
 
@@ -330,7 +348,7 @@ public class Home extends Activity {
             }
         }
 
-        mApplicationsStack.setFavorites(mFavorites);
+        //mApplicationsStack.setFavorites(mFavorites);
     }
 
     private static void beginDocument(XmlPullParser parser, String firstElementName)
@@ -359,11 +377,12 @@ public class Home extends Activity {
             // Empty
         }
     }
-
+*/
     /**
      * Refreshes the recently launched applications stacked over the favorites. The number
      * of recents depends on how many favorites are present.
      */
+    /*
     private void bindRecents() {
         final PackageManager manager = getPackageManager();
         final ActivityManager tasksManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
@@ -382,16 +401,16 @@ public class Home extends Activity {
                 ApplicationInfo info = getApplicationInfo(manager, intent);
                 if (info != null) {
                     info.intent = intent;
-                    if (!mFavorites.contains(info)) {
-                        recents.add(info);
-                    }
+//                    if (!mFavorites.contains(info)) {
+//                        recents.add(info);
+//                    }
                 }
             }
         }
 
-        mApplicationsStack.setRecents(recents);
+        //mApplicationsStack.setRecents(recents);
     }
-
+*/
     private static ApplicationInfo getApplicationInfo(PackageManager manager, Intent intent) {
         final ResolveInfo resolveInfo = manager.resolveActivity(intent, 0);
 
@@ -422,13 +441,21 @@ public class Home extends Activity {
     @SuppressLint({ "NewApi", "NewApi" })
 	@Override
     public boolean dispatchKeyEvent(KeyEvent event) {
+    	Toast.makeText(getApplicationContext(), "dispatchKeyEvent", Toast.LENGTH_SHORT).show();
+    	
         if (event.getAction() == KeyEvent.ACTION_DOWN) {
             switch (event.getKeyCode()) {
                 case KeyEvent.KEYCODE_BACK:
                     mBackDown = true;
+                    Toast.makeText(getApplicationContext(), "BACK 1", Toast.LENGTH_SHORT).show();
+                    myPager.setCurrentItem(HomePagerAdapter.SCREEN_CENTER);
                     return true;
                 case KeyEvent.KEYCODE_HOME:
                     mHomeDown = true;
+                	//myPager.setCurrentItem(HomePagerAdapter.SCREEN_CENTER); 
+                	//myPager.invalidate();
+                	Toast.makeText(getApplicationContext(), "HOME", Toast.LENGTH_SHORT).show();
+                	Log.e("PUSH", "Home 2");
                     return true;
             }
         } else if (event.getAction() == KeyEvent.ACTION_UP) {
@@ -436,12 +463,18 @@ public class Home extends Activity {
                 case KeyEvent.KEYCODE_BACK:
                     if (!event.isCanceled()) {
                         // Do BACK behavior.
+                    	Toast.makeText(getApplicationContext(), "BACK 2", Toast.LENGTH_SHORT).show();
                     }
                     mBackDown = true;
                     return true;
                 case KeyEvent.KEYCODE_HOME:
+                	Toast.makeText(getApplicationContext(), "HOME", Toast.LENGTH_SHORT).show();
+                	Log.e("PUSH", "Home 2");                	
                     if (!event.isCanceled()) {
                         // Do HOME behavior.
+                    	//myPager.setCurrentItem(HomePagerAdapter.SCREEN_CENTER); 
+                    	Toast.makeText(getApplicationContext(), "HOME", Toast.LENGTH_SHORT).show();
+                    	Log.e("PUSH", "Home 2");
                     }
                     mHomeDown = true;
                     return true;
@@ -451,6 +484,21 @@ public class Home extends Activity {
         return super.dispatchKeyEvent(event);
     }
     
+    
+    
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+    	Toast.makeText(this, "onKeyDown", Toast.LENGTH_LONG).show();  
+        if ((keyCode == KeyEvent.KEYCODE_HOME)) {
+            Toast.makeText(this, "You pressed the home button!", Toast.LENGTH_LONG).show();                     
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+        
+    
+    
+    /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
@@ -486,7 +534,7 @@ public class Home extends Activity {
         final Intent pickWallpaper = new Intent(Intent.ACTION_SET_WALLPAPER);
         startActivity(Intent.createChooser(pickWallpaper, getString(R.string.menu_wallpaper)));
     }
-
+*/
     /**
      * Loads the list of installed applications in mApplications.
      */
@@ -544,6 +592,7 @@ public class Home extends Activity {
 
             }
             
+            // Took from http://hi-android.info/src/index.html
             // ********************* ADD Call Log
             ApplicationInfo application = new ApplicationInfo();
             application.title = "Call Log";
@@ -612,7 +661,7 @@ public class Home extends Activity {
         mGridExit.setAnimationListener(new HideGrid());
         mGrid.startAnimation(mGridExit);
         mGrid.setVisibility(View.INVISIBLE);
-        mShowApplications.requestFocus();
+//        mShowApplications.requestFocus();
 
         // This enables a layout animation; if you uncomment this code, you need to
         // comment the line mGrid.startAnimation() above
@@ -639,15 +688,15 @@ public class Home extends Activity {
         public void onReceive(Context context, Intent intent) {
             loadApplications(false);
             bindApplications();
-            bindRecents();
-            bindFavorites(false);
+            //bindRecents();
+            //bindFavorites(false);
         }
     }
 
     /**
      * GridView adapter to show the list of all installed applications.
      */
-    private class ApplicationsAdapter extends ArrayAdapter<ApplicationInfo> {
+    class ApplicationsAdapter extends ArrayAdapter<ApplicationInfo> {
         private Rect mOldBounds = new Rect();
 
         public ApplicationsAdapter(Context context, ArrayList<ApplicationInfo> apps) {
@@ -769,9 +818,10 @@ public class Home extends Activity {
     /**
      * Starts the selected activity/application in the grid view.
      */
-    private class ApplicationLauncher implements AdapterView.OnItemClickListener {
+    class ApplicationLauncher implements AdapterView.OnItemClickListener {
         public void onItemClick(AdapterView parent, View v, int position, long id) {
             ApplicationInfo app = (ApplicationInfo) parent.getItemAtPosition(position);
+            Log.e("ApplicationLauncher", app.intent+"");
             startActivity(app.intent);
         }
     }

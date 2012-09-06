@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="bottom"
+    android:orientation="vertical" >
+
+    <Button
+        android:id="@+id/buttonAdd"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:onClick="onAddNewEntry"
+        android:text="@string/button_add_new" />
+
+    <ListView
+        android:id="@+id/listView1"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        
+        android:layout_weight="5" >
+               
+    </ListView>
+    
+    
+    <!-- ScrollView
+        android:id="@+id/listView1"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp" 
+        android:layout_weight="1"
+        >
+
+        <LinearLayout
+            android:id="@+id/lista_entrysow"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp" 
+            android:orientation="vertical">
+        </LinearLayout>
+    </ScrollView -->    
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/button2"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="sortByDate"
+            android:text="Date" />
+        
+        <Button
+            android:id="@+id/button3"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="sortByMileage"
+            android:text="Mileage" />
+            
+        <Button
+            android:id="@+id/button4"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="sortByExpired"
+            android:text="Expired" />
+        
+    </LinearLayout>
+
+</LinearLayout>
