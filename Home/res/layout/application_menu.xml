@@ -14,19 +14,13 @@
      limitations under the License.
 -->
 
-<resources>
-    <!-- Home -->
-    <string name="show_all_app">Show all applications</string>
-    <string name="home_title">Gigaset Home</string>
-    <string name="show_all_apps">All</string>
-
-    <!-- Home Menus -->
-    <string name="menu_wallpaper">Wallpaper</string>
-    <string name="menu_search">Search</string>
-    <string name="menu_settings">Settings</string>
-
-    <!-- Wallpaper -->
-    <string name="wallpaper_instructions">Tap picture to set portrait wallpaper</string>
-    <string name="aaa">sss</string>
-</resources>
-
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/label_menu"
+    android:layout_width="65dip"
+    android:layout_height="65dip"
+    android:paddingTop="4dip"
+    android:textSize="14dip"
+    android:singleLine="true"
+    android:ellipsize="end"
+    android:textColor="@color/bright_text_dark_focused"
+    android:gravity="center_horizontal|center_vertical" />

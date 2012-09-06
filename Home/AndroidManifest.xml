@@ -34,7 +34,7 @@
     <uses-sdk android:targetSdkVersion="14" android:minSdkVersion="10"/>
 
     <application android:label="@string/home_title"
-          android:icon="@drawable/ic_launcher_home">
+          android:icon="@drawable/menu_settings__display_keypad_press">
 
         <activity android:name="Home"
                 android:theme="@style/Theme"
@@ -42,10 +42,12 @@
                 android:stateNotNeeded="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.HOME"/>
-                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER"/>
+                <!--category android:name="android.intent.category.HOME"/-->
+                <!--category android:name="android.intent.category.DEFAULT" /-->
             </intent-filter>
         </activity>
+        <activity android:name="AllApplicationActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
 
 
     </application>

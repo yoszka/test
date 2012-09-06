@@ -15,7 +15,6 @@
 -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:home="http://schemas.android.com/apk/res/com.example.android.home"
     android:id="@+id/home_main_panel_ll"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -30,7 +29,7 @@
         android:layout_weight="0.9"
         android:alwaysDrawnWithCache="true"
         android:background="@android:color/transparent"
-        android:columnWidth="105dp"
+        android:columnWidth="85dp"
         android:drawSelectorOnTop="false"
         android:listSelector="@drawable/grid_selector"
         android:numColumns="2"

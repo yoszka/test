@@ -19,7 +19,7 @@
 /*
  * 1) Add View with current display and internal name indicator
  * 2) Add View with icon + new message counter indicator
- * 3) Implement multi window (3) HOME SCREEN
+-- 3)-Implement-multi-window-(3)-HOME-SCREEN--
  * 4) Add custom Status Bar (?)
  * 5) Create "Main Menu" Activity with given applications
  * 6) Create "Main Menu Setup" on long press main screen
@@ -36,26 +36,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.PaintFlagsDrawFilter;
-import android.graphics.PixelFormat;
 import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.PaintDrawable;
 import android.os.Bundle;
 import android.provider.CallLog;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.GridView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -66,7 +57,8 @@ import com.gigaset.home.R;
 
 
 public class Home extends Activity {
-    private static ArrayList<ApplicationInfo> mApplications;
+    //private static ArrayList<ApplicationInfo> mApplications;
+	private ArrayList<ApplicationInfo> mApplications;
 
     private ViewPager 	myPager;
     
@@ -122,30 +114,6 @@ public class Home extends Activity {
 
 
     }
-
-
-
-//    /**
-//     * Creates a new applications adapter for the grid view and registers it.
-//     */
-//    private void bindApplications() 
-//    {
-//        if (mGrid == null) 
-//        {
-//            mGrid = (GridView) findViewById(R.id.all_apps);
-//        }
-//        mGrid.setAdapter(new ApplicationsAdapter(this, mApplications));
-//        mGrid.setSelection(0);
-//
-//    }
-
-//    /**
-//     * Binds actions to the various buttons.
-//     */
-//    private void bindButtons() 
-//    {
-//        mGrid.setOnItemClickListener(new ApplicationLauncher());
-//    }
 
 
 
@@ -266,6 +234,7 @@ public class Home extends Activity {
             application = new ApplicationInfo();
             application.title = "Call List";
             application.icon = getResources().getDrawable(R.drawable.main_screen_icon_call_log);           
+            
             application.setActivityWithAction(Intent.ACTION_VIEW, CallLog.Calls.CONTENT_TYPE);          
             mApplications.add(application);   
             
@@ -282,7 +251,7 @@ public class Home extends Activity {
             
             // ********************* ADD Call Settings ****************************
             application = new ApplicationInfo();
-            application.title = "Call Settins";
+            application.title = "Call Settings";
             application.icon  = application.icon = getResources().getDrawable(R.drawable.main_screen_icon_call_settings);
             application.setActivity(new ComponentName(
                     "com.android.settings",
@@ -430,19 +399,6 @@ public class Home extends Activity {
     }
 
 
-
-//    /**
-//     * Starts the selected activity/application in the grid view.
-//     */
-//    private class ApplicationLauncher implements AdapterView.OnItemClickListener 
-//    {
-//        public void onItemClick(AdapterView parent, View v, int position, long id) 
-//        {
-//            ApplicationInfo app = (ApplicationInfo) parent.getItemAtPosition(position);
-//            startActivity(app.intent);
-//        }
-//    }
-
   
     
     /**
@@ -451,10 +407,17 @@ public class Home extends Activity {
      */
     public void allApplicationButton(View v)
     {
-    	Intent showCallLogIntent = new Intent();
-    	showCallLogIntent.setAction(Intent.ACTION_VIEW);
-    	showCallLogIntent.setType(CallLog.Calls.CONTENT_TYPE);
-    	startActivity(showCallLogIntent);
+    	
+//    	Intent showCallLogIntent = new Intent();
+//    	showCallLogIntent.setAction(Intent.ACTION_VIEW);
+//    	showCallLogIntent.setType(CallLog.Calls.CONTENT_TYPE);
+//    	startActivity(showCallLogIntent);
+    	
+    	Intent intent = new Intent(getApplicationContext(), AllApplicationActivity.class);    	
+    	startActivity(intent);
+    	//overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+    	
+    	
     }
     
 
