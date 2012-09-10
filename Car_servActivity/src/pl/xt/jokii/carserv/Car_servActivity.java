@@ -48,16 +48,6 @@ public class Car_servActivity extends Activity {
         
         resultsSet.init();
         
-        // BUTTON Add New ***************************************************************
-//        Button buttonAddNew = (Button)findViewById(R.id.buttonAdd);
-//        buttonAddNew.setOnClickListener(new View.OnClickListener() {
-//			
-//			public void onClick(View v) {
-//				Intent intent = new Intent(getApplicationContext(), NewEntry.class);
-//				startActivityForResult(intent, ADD_NEW_ENTRY_REQUEST);
-//				
-//			}
-//		});
 	     
 	    	 cursor = getContentResolver().query(CarServProviderMetaData.CarServTableMetaData.CONTENT_URI, null, null, null, null); // wszystkie kolumny, bez kluzuli WHERE, bez WHERE argumentów, bez sortowania	       
 	       
@@ -211,8 +201,6 @@ public class Car_servActivity extends Activity {
 	    else
 	    {
 	    	Toast.makeText(getApplicationContext(), "Canceled", Toast.LENGTH_SHORT).show();
-	    	String[] s = new String[2];
-	    	s[0].toUpperCase();				// Cause NullPionterException
 	    }    	
     }
 

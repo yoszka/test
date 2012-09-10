@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/applications_background">
+    
+<!-- android.support.v4.view.ViewPager
+    android:id="@+id/all_application_bg"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    
+    android:layout_weight="0.9"/--> 
+
+
+	<GridView xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:id="@+id/all_apps_menu"
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_weight="0.9"
+	    android:alwaysDrawnWithCache="true"	    
+	    android:background="@android:color/transparent"
+	    android:columnWidth="60dp"
+	    android:drawSelectorOnTop="false"
+	    android:gravity="center_horizontal"
+	    android:listSelector="@drawable/grid_selector"
+	    android:numColumns="4"
+	    android:paddingTop="20dp"
+	    android:persistentDrawingCache="animation|scrolling"
+	    android:scrollbars="none"
+	    android:stackFromBottom="false"
+	    android:stretchMode="spacingWidth"
+	    android:verticalSpacing="30dp"
+	    android:visibility="visible" >
+	
+	</GridView>
+
+    
+    <ImageButton
+        android:id="@+id/imageButton1"
+        android:layout_width="54dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="0.1"
+        android:onClick="onClickCallbackbackToHome"
+        android:contentDescription="@string/show_all_app"
+        android:background="@android:color/transparent"
+        android:src="@drawable/applications_icon_home" />
+
+</LinearLayout>
+
+
+
+
+
+
+
+

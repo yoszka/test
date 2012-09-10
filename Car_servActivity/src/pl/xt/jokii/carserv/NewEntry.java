@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 public class NewEntry extends Activity{
 	private int selectedType = 0;
@@ -46,6 +47,11 @@ public class NewEntry extends Activity{
 			carServEntry = getEntryFromDB(EntryId);
 		}
 		
+		if(!Connectivity.isOnline(this))	// Check for Internet connection
+		{
+			Toast.makeText(getApplicationContext(), "No Inernet connection", Toast.LENGTH_SHORT).show();
+		}
+		
 		// SPINNER ***********************************************************************************************
 		//String[] items = new String[] {"Inne", "Olej", "P³yn hamulcowy", "Opony", "Filtr powietrza", "Rozrz¹d"};
 		items 							= getResources().getStringArray(R.array.entry_types);
@@ -67,7 +73,7 @@ public class NewEntry extends Activity{
 		});
 		// *******************************************************************************************************
 		
-		// Set vlaues to edit
+		// Set values to edit
 		if(null != carServEntry)
 		{
 			// Type -------------------------------------------------------------------------------------------------
@@ -93,9 +99,11 @@ public class NewEntry extends Activity{
 
 		
 		Button buttonOk = (Button)findViewById(R.id.buttonOK);
-		buttonOk.setOnClickListener(new View.OnClickListener() {
+		buttonOk.setOnClickListener(new View.OnClickListener() 
+		{
 			
-			public void onClick(View v) {
+			public void onClick(View v) 
+			{
 				
 				 // Header -----------------------------------------------------------------------------------------------
 				 EditText 		editTextOpis 	= (EditText)findViewById(R.id.editWindowDescription);				 
@@ -128,7 +136,7 @@ public class NewEntry extends Activity{
 					 carServEntry.setHeader(header);
 					 carServEntry.setMileage(mileage);
 					 carServEntry.setDate(dateStamp);
-					 //TODO
+	
 					 updateEntryDB(EntryId, carServEntry);
 					 
 					 Car_servActivity.resultsSet.updateEntry(EntryId, carServEntry);
@@ -140,27 +148,45 @@ public class NewEntry extends Activity{
 				 }
 				 else
 				 {
-
-			 		 ContentValues args = new ContentValues();
-					 args.put(CarServTableMetaData.SERVICE_HEADER, 	header);
-					 args.put(CarServTableMetaData.SERVICE_DATE, 	dateStamp);
-					 args.put(CarServTableMetaData.SERVICE_MILEAGE, mileage);
-					 args.put(CarServTableMetaData.SERVICE_TYPE, 	selectedType);
+	
+//			 		 ContentValues args = new ContentValues();
+//					 args.put(CarServTableMetaData.SERVICE_HEADER, 	header);
+//					 args.put(CarServTableMetaData.SERVICE_DATE, 	dateStamp);
+//					 args.put(CarServTableMetaData.SERVICE_MILEAGE, mileage);
+//					 args.put(CarServTableMetaData.SERVICE_TYPE, 	selectedType);
+//					 
+//					 getContentResolver().insert(CarServProviderMetaData.CarServTableMetaData.CONTENT_URI, args);
+					 carServEntry = new CarServEntry();
+					 carServEntry.setType(selectedType);
+					 carServEntry.setHeader(header);
+					 carServEntry.setMileage(mileage);
+					 carServEntry.setDate(dateStamp);
+					 insertEntryDB(carServEntry);
 					 
-					 getContentResolver().insert(CarServProviderMetaData.CarServTableMetaData.CONTENT_URI, args);	
-					 
-					 if((new Connectivity(activity)).isOnline())	// Check for Internet connection
+					 if(Connectivity.isOnline(activity))	// Check for Internet connection
 					 {
-						 // ******* send via POST **********
-						 StringBuilder str = new StringBuilder();
-						 str.append("HEADER: " 		+ header 				+ "\n");
-						 str.append("MILEAGE: " 	+ mileage 				+ "\n");
-						 str.append("DATESTAMP: "	+ dateStamp 			+ "\n");
-						 str.append("TYPE: " 		+ items[selectedType] 	+ "\n");					 
-						 sendViaPOST(str.toString());
-						 // ******* send via POST ********** end
+						 try
+						 {
+							 // ******* send via POST **********
+							 StringBuilder str = new StringBuilder();
+							 str.append("HEADER: " 		+ header 				+ "\n");
+							 str.append("MILEAGE: " 	+ mileage 				+ "\n");
+							 str.append("DATESTAMP: "	+ dateStamp 			+ "\n");
+							 str.append("TYPE: " 		+ items[selectedType] 	+ "\n");					 
+							 sendViaPOST(str.toString());
+							 // ******* send via POST ********** end
+						 }
+						 catch (Exception e)
+						 {
+							 Toast.makeText(getApplicationContext(), "Connection error\nUpdated local DB", Toast.LENGTH_SHORT).show();
+						 }
+						 
 					 }
-			         //TODO
+					 else
+					 {
+						 Toast.makeText(getApplicationContext(), "Updated local DB", Toast.LENGTH_SHORT).show();
+					 }	 
+						 
 		   	    	 Cursor cursor = getContentResolver().query(CarServProviderMetaData.CarServTableMetaData.CONTENT_URI, new String[]{CarServTableMetaData._ID}, null, null, CarServTableMetaData._ID + " DESC"); // kolumna "_id", bez kluzuli WHERE, bez WHERE argumentów, sortowanie DESC
 		   	       
 		   	         if(cursor.moveToFirst())			//Metoda zwraca FALSE jesli cursor jest pusty
@@ -225,11 +251,30 @@ public class NewEntry extends Activity{
 		ContentValues args = new ContentValues();
 		args.put(CarServTableMetaData.SERVICE_HEADER, 	carServEntry.getHeader());
 		args.put(CarServTableMetaData.SERVICE_DATE, 	carServEntry.getDate());
-		args.put(CarServTableMetaData.SERVICE_MILEAGE, carServEntry.getMileage());
+		args.put(CarServTableMetaData.SERVICE_MILEAGE,  carServEntry.getMileage());
 		args.put(CarServTableMetaData.SERVICE_TYPE, 	carServEntry.getType());
 		
 		getContentResolver().update(Uri.withAppendedPath(CarServProviderMetaData.CarServTableMetaData.CONTENT_URI, id+""), args, null, null);			
 	}
+	
+	/**
+	 * Update given entry id in data base with data from carServEntry
+	 * @param _ID			- id of entry in data base
+	 * @param carServEntry	- new values for update
+	 */
+	private void insertEntryDB(CarServEntry carServEntry)
+	{	
+		
+		//String strFilter = "_ID = "+id;
+		ContentValues args = new ContentValues();
+		args.put(CarServTableMetaData.SERVICE_HEADER, 	carServEntry.getHeader());
+		args.put(CarServTableMetaData.SERVICE_DATE, 	carServEntry.getDate());
+		args.put(CarServTableMetaData.SERVICE_MILEAGE,  carServEntry.getMileage());
+		args.put(CarServTableMetaData.SERVICE_TYPE, 	carServEntry.getType());
+		
+		getContentResolver().insert(CarServProviderMetaData.CarServTableMetaData.CONTENT_URI, args);
+		//getContentResolver().update(Uri.withAppendedPath(CarServProviderMetaData.CarServTableMetaData.CONTENT_URI, id+""), args, null, null);			
+	}	
 	
 	/**
 	 * Send message to external server
