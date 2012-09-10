@@ -1,0 +1,15 @@
+package com.gigaset.home;
+
+import android.content.Context;
+import android.view.View;
+
+public class ScreenIconView extends View {
+
+	public ScreenIconView(Context context) {
+		super(context);
+		// TODO Auto-generated constructor stub
+	}
+
+
+
+}

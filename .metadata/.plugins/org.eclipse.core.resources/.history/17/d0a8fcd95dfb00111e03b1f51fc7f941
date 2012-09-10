@@ -1,0 +1,58 @@
+package com.gigaset.home;
+
+
+
+import com.example.android.home.R;
+
+import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Canvas;
+import android.util.AttributeSet;
+import android.view.View;
+
+public class ScreenIconView extends View {
+	private String label = new String();
+	private int icon_active;
+	private int icon_inactive;
+	private int pages_cnt;
+	private int default_page;
+
+	// ************** Constructors **************************
+	
+	public ScreenIconView(Context context) {
+		super(context);
+		
+	}
+	
+	/**
+	 * Constructor from XML layout
+	 * @param context
+	 * @param attrs
+	 * @param defStyle
+	 */
+	public ScreenIconView(Context context, AttributeSet attrs, int defStyle) {
+		super(context, attrs, defStyle);
+	}
+
+	public ScreenIconView(Context context, AttributeSet attrs) {
+		super(context, attrs);
+
+
+		TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.atrybutes);			// get array with attributes
+		
+		// Pobranie atrybutow z layoutu z XML'a
+		
+		label 	= (String) ta.getString(R.styleable.atrybutes_label);				// "" (none) by default
+//		heigth 	= (int) ta.getFloat(R.styleable.atrybutes_icon_active, 		0);		// 0 - by default
+//		dx      = (int) ta.getFloat(R.styleable.atrybutes_icon_inactive, 	0);		// 0 - by default
+//		dy      = (int) ta.getFloat(R.styleable.atrybutes_pages_cnt,		3);		// 3 - by default
+//		dy      = (int) ta.getFloat(R.styleable.atrybutes_default_page, 	1);		// 1 - by default
+		
+	}
+	
+
+	@Override
+	protected void onDraw(Canvas canvas) {
+		super.onDraw(canvas);
+	}
+}
