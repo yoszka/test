@@ -1,0 +1,34 @@
+package pl.xt.jokii.websocket;
+
+import com.strumsoft.websocket.phonegap.WebSocket;
+import com.strumsoft.websocket.phonegap.WebSocketFactory;
+
+import android.os.Bundle;
+import android.app.Activity;
+import android.util.Log;
+import android.view.Menu;
+import android.webkit.WebView;
+
+public class MainActivity extends Activity {
+	private WebView appView;
+	private WebSocket webSocket;
+	private WebSocketListener webSocketListener;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        
+//        WebSocketFactory wsf = new WebSocketFactory(appView);
+//        WebSocket webSocket = wsf.getInstance("wss://echo.websocket.org");
+//        Log.v("ws","webSocket "+webSocket);
+        
+        
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_main, menu);
+        return true;
+    }
+}

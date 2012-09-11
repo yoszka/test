@@ -73,7 +73,7 @@
               <children xsi:type="advanced:Placeholder" xmi:id="_VoVVFPIREeGd-f4e9-pmUw" elementId="org.eclipse.jdt.ui.TypeHierarchy" toBeRendered="false" ref="_VktZUPIREeGd-f4e9-pmUw"/>
               <children xsi:type="advanced:Placeholder" xmi:id="_VoVVFfIREeGd-f4e9-pmUw" elementId="org.eclipse.jdt.ui.PackagesView" toBeRendered="false" ref="_VoBzEPIREeGd-f4e9-pmUw"/>
             </children>
-            <children xsi:type="basic:PartSashContainer" xmi:id="_VoVVFvIREeGd-f4e9-pmUw" containerData="8528" selectedElement="_VoVVF_IREeGd-f4e9-pmUw">
+            <children xsi:type="basic:PartSashContainer" xmi:id="_VoVVFvIREeGd-f4e9-pmUw" containerData="8528" selectedElement="_VoV8IfIREeGd-f4e9-pmUw">
               <children xsi:type="basic:PartSashContainer" xmi:id="_VoVVF_IREeGd-f4e9-pmUw" containerData="6810" selectedElement="_VoVVGPIREeGd-f4e9-pmUw" horizontal="true">
                 <children xsi:type="advanced:Placeholder" xmi:id="_VoVVGPIREeGd-f4e9-pmUw" elementId="org.eclipse.ui.editorss" containerData="7860" ref="_VjAJIPIREeGd-f4e9-pmUw"/>
                 <children xsi:type="basic:PartStack" xmi:id="_VoVVGfIREeGd-f4e9-pmUw" elementId="topRight" containerData="2140" selectedElement="_VoVVGvIREeGd-f4e9-pmUw">
@@ -82,7 +82,7 @@
                   <children xsi:type="advanced:Placeholder" xmi:id="_VoV8IPIREeGd-f4e9-pmUw" elementId="org.eclipse.mylyn.tasks.ui.views.tasks" ref="_VoRDoPIREeGd-f4e9-pmUw"/>
                 </children>
               </children>
-              <children xsi:type="basic:PartStack" xmi:id="_VoV8IfIREeGd-f4e9-pmUw" elementId="bottomRight" containerData="3190" selectedElement="_VoV8KfIREeGd-f4e9-pmUw">
+              <children xsi:type="basic:PartStack" xmi:id="_VoV8IfIREeGd-f4e9-pmUw" elementId="bottomRight" containerData="3190" selectedElement="_0rlN4PIVEeGd-f4e9-pmUw">
                 <tags>newtablook</tags>
                 <tags>org.eclipse.e4.secondaryDataStack</tags>
                 <children xsi:type="advanced:Placeholder" xmi:id="_VoV8IvIREeGd-f4e9-pmUw" elementId="org.eclipse.ui.views.AllMarkersView" ref="_VoBzEfIREeGd-f4e9-pmUw"/>
@@ -417,6 +417,7 @@
       <tags>categoryTag:Data Management</tags>
     </sharedElements>
     <sharedElements xsi:type="basic:Part" xmi:id="_VoHSoPIREeGd-f4e9-pmUw" elementId="org.eclipse.wst.common.snippets.internal.ui.SnippetsView" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityView" label="Snippets" iconURI="platform:/plugin/org.eclipse.wst.common.snippets//icons/snippets_view.gif" tooltip="" closeable="true">
+      <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;&#xA;&lt;view>&#xD;&#xA;&lt;entry expansion=&quot;false&quot; extent=&quot;20&quot; maximum=&quot;100&quot; minimum=&quot;0&quot; pinned=&quot;false&quot; value=&quot;0&quot;>&#xD;&#xA;&lt;entry selection=&quot;0&quot;/>&#xD;&#xA;&lt;entry selection=&quot;0&quot;/>&#xD;&#xA;&lt;entry selection=&quot;0&quot;/>&#xD;&#xA;&lt;entry selection=&quot;0&quot;/>&#xD;&#xA;&lt;entry selection=&quot;0&quot;/>&#xD;&#xA;&lt;entry selection=&quot;0&quot;/>&#xD;&#xA;&lt;entry selection=&quot;0&quot;/>&#xD;&#xA;&lt;/entry>&#xD;&#xA;&lt;/view>"/>
       <tags>View</tags>
       <tags>categoryTag:General</tags>
       <menus xmi:id="_epdLgPUrEeGC5-OWF_YHZQ" elementId="org.eclipse.wst.common.snippets.internal.ui.SnippetsView">

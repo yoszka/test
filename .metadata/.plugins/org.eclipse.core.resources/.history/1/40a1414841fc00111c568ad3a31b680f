@@ -1,0 +1,37 @@
+package pl.xt.jokii.websocket;
+
+import java.net.URI;
+
+import android.webkit.WebView;
+
+import com.strumsoft.websocket.phonegap.WebSocket;
+
+public class WebSocketListener extends WebSocket{
+	WebView appView;
+
+	protected WebSocketListener(WebView appView, URI uri, Draft draft, String id) {
+		super(appView, uri, draft, id);
+		
+		this.appView = appView;
+	}
+
+
+	@Override
+	public void onOpen() {
+		// TODO Auto-generated method stub
+		super.onOpen();
+
+	   String customHtml = "<html><body><h1>Hello, WebView</h1></body></html>";
+	   this.appView.loadData(customHtml, "text/html", "UTF-8");
+	}
+	
+	@Override
+	public void onClose() {
+		// TODO Auto-generated method stub
+		super.onClose();
+	}
+	
+	public void onMessage(String msg) {};
+	
+
+}

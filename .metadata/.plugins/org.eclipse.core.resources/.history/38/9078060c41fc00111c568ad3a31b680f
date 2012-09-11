@@ -1,0 +1,5 @@
+package pl.xt.jokii.events;
+
+public interface WebSocketEventListener {
+
+}

@@ -1,0 +1,12 @@
+package pl.xt.jokii.events;
+
+public class WebSocketEvent extends java.util.EventObject{
+
+
+
+	public WebSocketEvent(Object source) {
+		super(source);
+		// TODO Auto-generated constructor stub
+	}
+
+}

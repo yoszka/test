@@ -1,0 +1,13 @@
+package pl.xt.jokii.websocket;
+
+public class WebSocketListener {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}
