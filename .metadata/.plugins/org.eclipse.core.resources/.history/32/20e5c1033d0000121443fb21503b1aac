@@ -30,8 +30,8 @@ public class AlarmSender extends Activity{
 		// get a Calendar object with current time
 		 Calendar cal = Calendar.getInstance();
 		 // add 5 minutes to the calendar object
-		 cal.add(Calendar.MINUTE, 10);
-		 //cal.add(Calendar.SECOND, 15);
+		 //cal.add(Calendar.MINUTE, 5);
+		 cal.add(Calendar.SECOND, 15);
 		 
 		 Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
 		 intent.putExtra(AlarmReceiver.ALARM_MESSAGE, "Jokii is great");
