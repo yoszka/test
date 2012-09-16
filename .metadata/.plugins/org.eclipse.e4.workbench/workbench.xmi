@@ -73,7 +73,7 @@
               <children xsi:type="advanced:Placeholder" xmi:id="_VoVVFPIREeGd-f4e9-pmUw" elementId="org.eclipse.jdt.ui.TypeHierarchy" toBeRendered="false" ref="_VktZUPIREeGd-f4e9-pmUw"/>
               <children xsi:type="advanced:Placeholder" xmi:id="_VoVVFfIREeGd-f4e9-pmUw" elementId="org.eclipse.jdt.ui.PackagesView" toBeRendered="false" ref="_VoBzEPIREeGd-f4e9-pmUw"/>
             </children>
-            <children xsi:type="basic:PartSashContainer" xmi:id="_VoVVFvIREeGd-f4e9-pmUw" containerData="8528" selectedElement="_VoV8IfIREeGd-f4e9-pmUw">
+            <children xsi:type="basic:PartSashContainer" xmi:id="_VoVVFvIREeGd-f4e9-pmUw" containerData="8528" selectedElement="_VoVVF_IREeGd-f4e9-pmUw">
               <children xsi:type="basic:PartSashContainer" xmi:id="_VoVVF_IREeGd-f4e9-pmUw" containerData="6810" selectedElement="_VoVVGPIREeGd-f4e9-pmUw" horizontal="true">
                 <children xsi:type="advanced:Placeholder" xmi:id="_VoVVGPIREeGd-f4e9-pmUw" elementId="org.eclipse.ui.editorss" containerData="7860" ref="_VjAJIPIREeGd-f4e9-pmUw"/>
                 <children xsi:type="basic:PartStack" xmi:id="_VoVVGfIREeGd-f4e9-pmUw" elementId="topRight" containerData="2140" selectedElement="_VoVVGvIREeGd-f4e9-pmUw">
