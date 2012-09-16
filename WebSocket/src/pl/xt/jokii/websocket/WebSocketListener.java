@@ -1,11 +1,11 @@
 package pl.xt.jokii.websocket;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import pl.xt.jokii.events.WebSocketEvent;
 import pl.xt.jokii.events.WebSocketEventListener;
 
 import android.webkit.WebView;
@@ -41,7 +41,7 @@ public class WebSocketListener extends WebSocket{
 		
 		while(i.hasNext())	
 		{
-			((WebSocketEventListener) i.next()).handleWebSocketEvent();
+			((WebSocketEventListener) i.next()).handleOpenEvent();
 		}
 	}
 		
@@ -58,6 +58,19 @@ public class WebSocketListener extends WebSocket{
 			((WebSocketEventListener) i.next()).handleSendEvent(msg);
 		}					
 	}
+	
+	
+	// call this method when need to notify listener
+	// the event listeners of the close event
+	private synchronized void fireCloseEvent()
+	{	
+		Iterator i = _listeners.iterator();
+		
+		while(i.hasNext())	
+		{
+			((WebSocketEventListener) i.next()).handleCloseEvent();
+		}					
+	}	
 
 	/**
 	 * Constructor
@@ -72,26 +85,56 @@ public class WebSocketListener extends WebSocket{
 		this.appView = appView;
 	}
 	
+	
+//	@Override
+//	public Thread connect() throws IOException {
+//		return super.connect();
+//	}
+	
+	
+	/**
+	 * Wraper for connect function, run it on separate thread
+	 * @return thread which in is sunned
+	 * @throws IOException
+	 */
+	public Thread connectTh()
+	{
+		Thread th = new Thread(new Runnable() {
+			
+			public void run() {
+				try {
+					connect();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+			}
+		});
+		
+		th.start();
+		
+		return th;		
+	}
+	
 
 
 	@Override
 	public void onOpen() {
 		super.onOpen();
 
-	   String customHtml = "<html><body>Conecte</body></html>";
-	   this.appView.loadData(customHtml, "text/html", "UTF-8");
+		String customHtml = "<html><body>Conecte</body></html>";
+		this.appView.loadData(customHtml, "text/html", "UTF-8");
 	   
-	   fireOpenEvent();
+		fireOpenEvent();
 	}
 	
 	@Override
 	public void onClose() {
 		super.onClose();
+		fireCloseEvent();
 	}
 	
 	public void onMessage(String msg) {
-//		   String customHtml = "<html><body><h1>"+msg+"</h1></body></html>";
-//		   this.appView.loadData(customHtml, "text/html", "UTF-8");
 		   fireSendEvent(msg);
 	};
 	

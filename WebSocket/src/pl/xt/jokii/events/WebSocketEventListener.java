@@ -1,6 +1,7 @@
 package pl.xt.jokii.events;
 
 public interface WebSocketEventListener {
-    public void handleWebSocketEvent();
+    public void handleOpenEvent();
+    public void handleCloseEvent();
     public void handleSendEvent(String msg);
 }
