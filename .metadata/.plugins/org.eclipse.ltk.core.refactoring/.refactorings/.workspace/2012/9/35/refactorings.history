@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Rename Java project &apos;com.mamlambo.simpleviewpager.SimpleViewPagerActivity&apos; to &apos;SimpleViewPagerActivity&apos;&#x0D;&#x0A;- Original element: &apos;com.mamlambo.simpleviewpager.SimpleViewPagerActivity&apos;&#x0D;&#x0A;- Renamed element: &apos;com.mamlambo.simpleviewpager.SimpleViewPagerActivity&apos;&#x0D;&#x0A;- Update references to refactored element" description="Rename Java project &apos;com.mamlambo.simpleviewpager.SimpleViewPagerActivity&apos;" flags="7" id="org.eclipse.jdt.ui.rename.java.project" input="=com.mamlambo.simpleviewpager.SimpleViewPagerActivity" name="SimpleViewPagerActivity" references="true" stamp="1346592313967" version="1.0"/>
-</session>

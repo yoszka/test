@@ -1,7 +1,0 @@
-package pl.xt.jokii.alarmmanager;
-
-import android.content.BroadcastReceiver;
-
-public class BootReceiver extends BroadcastReceiver {
-
-}
