@@ -7,7 +7,7 @@ public class CarServProviderMetaData {
 	public static final String AUTHORITY = "pl.xt.jokii.db.CarServProvider";
 	
 	public static final String DATABASE_NAME = "carservice.db";
-	public static final int DATABASE_VERSION = 1;
+	public static final int DATABASE_VERSION = 2;
 	public static final String CARSERV_TABLE_NAME = "CarEvents_";
 	
 	private CarServProviderMetaData(){};
@@ -36,6 +36,8 @@ public class CarServProviderMetaData {
 		public static final String SERVICE_MILEAGE 	= "Mileage";	// int
 		
 		public static final String SERVICE_DATE 	= "Date";		// long
+		
+		public static final String SERVICE_EXPIRED 	= "isExpired";	// boolean
 		
 		//
 		//public static final String CREATED_DATE = "created";

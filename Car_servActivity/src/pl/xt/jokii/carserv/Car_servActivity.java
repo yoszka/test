@@ -1,9 +1,12 @@
 package pl.xt.jokii.carserv;
 
 import java.util.ArrayList;
+import java.util.Date;
+
 import pl.xt.jokii.adapter.EventAdapter;
 import pl.xt.jokii.db.CarServEntry;
 import pl.xt.jokii.db.CarServProviderMetaData;
+import pl.xt.jokii.db.DbUtils;
 import pl.xt.jokii.db.CarServProviderMetaData.CarServTableMetaData;
 import pl.xt.jokii.db.CarServResultsSet;
 
@@ -35,111 +38,81 @@ public class Car_servActivity extends Activity {
 	protected final static  int EDIT_ENTRY_REQUEST 		= 1366;						// random number being a key for result
 	protected final static  int UPDATE_ENTRY_REQUEST 	= 1367;						// random number being a key for result
 	private ListView listView							= null;
-	protected static CarServResultsSet resultsSet		= new CarServResultsSet();
+	protected static CarServResultsSet resultsSet;//		= new CarServResultsSet();
 	private ArrayList<CarServEntry> listEntries 		= new ArrayList<CarServEntry>();
+	private DbUtils dbUtils;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);   	    	        
         setContentView(R.layout.main);
         
-        Cursor cursor = null;        
+        dbUtils = new DbUtils(getContentResolver());								// Set content resolver for DbUtils class
         this.listView = (ListView)findViewById(R.id.listView1);       
         
-        resultsSet.init();
-        
-	     
-	    	 cursor = getContentResolver().query(CarServProviderMetaData.CarServTableMetaData.CONTENT_URI, null, null, null, null); // wszystkie kolumny, bez kluzuli WHERE, bez WHERE argumentów, bez sortowania	       
-	       
-	         if(cursor.moveToFirst())			//Metoda zwraca FALSE jesli cursor jest pusty
-	         { 
-		         do
-		         {
-		        	CarServEntry carServEntryTmp;
-		        	
-		        	carServEntryTmp = new CarServEntry();		        	
-		        	
-		        	carServEntryTmp.setId		(cursor.getLong		(cursor.getColumnIndex(CarServTableMetaData._ID)));
-		        	carServEntryTmp.setHeader	(cursor.getString	(cursor.getColumnIndex(CarServTableMetaData.SERVICE_HEADER)));
-		        	carServEntryTmp.setMileage	(cursor.getInt		(cursor.getColumnIndex(CarServTableMetaData.SERVICE_MILEAGE)));
-		        	carServEntryTmp.setType		(cursor.getInt		(cursor.getColumnIndex(CarServTableMetaData.SERVICE_TYPE)));
-		        	carServEntryTmp.setDate		(cursor.getLong		(cursor.getColumnIndex(CarServTableMetaData.SERVICE_DATE)));
-		        	
-		        	resultsSet.addEnd(carServEntryTmp);
-		        	
-		         }while(cursor.moveToNext()); 	//Metoda zwraca FALSE wówczas gdy cursor przejdzie ostatni wpis
-	         }
-	         else
-	         {
-	        	 Log.v("cursor", "NO DATA, creating some");	        	 
-        	 
-		 		 ContentValues args = new ContentValues();
+//        resultsSet.init();
+        	     
+    	resultsSet = dbUtils.retrieveResultSet();
+    
+    	 if(resultsSet == null)
+         {
+        	 Log.v("cursor", "NO DATA, creating some");	        	         	 				 				 
+			 
+			 CarServEntry carServEntryTmp = new CarServEntry();
+			 
+			 carServEntryTmp.setType(0);
+			 carServEntryTmp.setHeader("Pierwszy");
+			 carServEntryTmp.setMileage(99999);
+			 carServEntryTmp.setDate(1262304000000L);
+			 carServEntryTmp.setExpired(true);
+			 
+			 dbUtils.insertEntryDB(carServEntryTmp);				 
+			 
+			 // Then read again from data base
+			 resultsSet = dbUtils.retrieveResultSet();
+			 
+			 // If something goes wrong create new empty set
+			 if(resultsSet == null)
+			 {
+				 resultsSet = new CarServResultsSet();
+				 resultsSet.init();
+				 Log.e("WARNING", "resultsSet wasn't properly initialized!");
+			 }				 		        
+         }
+         
+         
+         this.listView.setOnItemLongClickListener(new OnItemLongClickListener() {
 
-				 args.put(CarServTableMetaData.SERVICE_HEADER, 	"Pierwszy");
-				 args.put(CarServTableMetaData.SERVICE_DATE, 	935412);
-				 args.put(CarServTableMetaData.SERVICE_MILEAGE, 100);
-				 args.put(CarServTableMetaData.SERVICE_TYPE, 	0);
-				 
-				 getContentResolver().insert(CarServProviderMetaData.CarServTableMetaData.CONTENT_URI, args);
-				 
-		         cursor = getContentResolver().query(CarServProviderMetaData.CarServTableMetaData.CONTENT_URI, null, null, null, null); // wszystkie kolumny, bez kluzuli WHERE, bez WHERE argumentów, bez sortowania
-		         
-		         if(cursor.moveToFirst())			//Metoda zwraca FALSE jesli cursor jest pusty
-		         { 
-			         do
-			         {
-			        	CarServEntry carServEntryTmp;
-			        	
-			        	carServEntryTmp = new CarServEntry();
+				public boolean onItemLongClick(AdapterView<?> arg0, View view, int position, long id) {
 
-			        	carServEntryTmp.setId		(cursor.getLong		(cursor.getColumnIndex(CarServTableMetaData._ID)));
-			        	carServEntryTmp.setHeader	(cursor.getString	(cursor.getColumnIndex(CarServTableMetaData.SERVICE_HEADER)));
-			        	carServEntryTmp.setMileage	(cursor.getInt		(cursor.getColumnIndex(CarServTableMetaData.SERVICE_MILEAGE)));
-			        	carServEntryTmp.setType		(cursor.getInt		(cursor.getColumnIndex(CarServTableMetaData.SERVICE_TYPE)));
-			        	carServEntryTmp.setDate		(cursor.getLong		(cursor.getColumnIndex(CarServTableMetaData.SERVICE_DATE)));			        	
-			        	
-			        	resultsSet.addEnd(carServEntryTmp);
-	        	
-			         }while(cursor.moveToNext()); 	//Metoda zwraca FALSE wówczas gdy cursor przejdzie ostatni wpis
-		         }		         
-	         }
-	         
-	         
-	         this.listView.setOnItemLongClickListener(new OnItemLongClickListener() {
+					Intent intent = new Intent(getApplicationContext(), DialogActivity.class);
+					intent.putExtra(DELETE_ITEM_RES, resultsSet.getEntries().get(position).getId());
+					startActivityForResult(intent, DELETE_ENTRY_REQUEST);
+					return true;
+				}
+		});
+         
+         this.listView.setOnItemClickListener(new OnItemClickListener() {
 
-					public boolean onItemLongClick(AdapterView<?> arg0, View view, int position, long id) {
-
-						Intent intent = new Intent(getApplicationContext(), DialogActivity.class);
-						intent.putExtra(DELETE_ITEM_RES, resultsSet.getEntries().get(position).getId());
-						startActivityForResult(intent, DELETE_ENTRY_REQUEST);
-						return true;
-					}
-			});
-	         
-	         this.listView.setOnItemClickListener(new OnItemClickListener() {
-
-					public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
-						
-						long idT = resultsSet.getEntries().get(position).getId();
-						Intent intent = new Intent(getApplicationContext(), EntryDetail.class);
-						
-						intent.putExtra(SHOW_ITEM_RES, idT);
-						
-						Log.v("Show detail", idT + ", position: "+position);
-						
-						startActivity(intent);
-					}
-			});
-	         
-	    	listEntries.clear();	    
-	    	listEntries.addAll(resultsSet.getEntries());
-	         
-         	EventAdapter ea = new EventAdapter(listEntries, getLayoutInflater());
-         	ea.setResource(getResources());
-         	this.listView.setAdapter(ea);
-	          
-
-	        cursor.close();            
+				public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
+					
+					long idT = resultsSet.getEntries().get(position).getId();
+					Intent intent = new Intent(getApplicationContext(), EntryDetail.class);
+					
+					intent.putExtra(SHOW_ITEM_RES, idT);
+					
+					Log.v("Show detail", idT + ", position: "+position);
+					
+					startActivity(intent);
+				}
+		});
+         
+    	listEntries.clear();	    
+    	listEntries.addAll(resultsSet.getEntries());
+         
+     	EventAdapter ea = new EventAdapter(listEntries, getLayoutInflater());
+     	ea.setResource(getResources());
+     	this.listView.setAdapter(ea);	                      
     }
     
     
@@ -173,8 +146,9 @@ public class Car_servActivity extends Activity {
 				        	carServEntryTmp.setHeader	(cursor.getString	(cursor.getColumnIndex(CarServTableMetaData.SERVICE_HEADER)));
 				        	carServEntryTmp.setMileage	(cursor.getInt		(cursor.getColumnIndex(CarServTableMetaData.SERVICE_MILEAGE)));
 				        	carServEntryTmp.setType		(cursor.getInt		(cursor.getColumnIndex(CarServTableMetaData.SERVICE_TYPE)));
-				        	carServEntryTmp.setDate		(cursor.getLong		(cursor.getColumnIndex(CarServTableMetaData.SERVICE_DATE)));				        					        	
-				        	
+				        	carServEntryTmp.setDate		(cursor.getLong		(cursor.getColumnIndex(CarServTableMetaData.SERVICE_DATE)));
+				        	carServEntryTmp.setExpired  (cursor.getInt		(cursor.getColumnIndex(CarServTableMetaData.SERVICE_EXPIRED)) == 1 );
+//				        	Log.v("EXPIRED", carServEntryTmp.isExpired()+"");
 				        	resultsSet.addEnd(carServEntryTmp);
 				        	sortByDateDesc();
 			   	         }

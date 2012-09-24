@@ -6,6 +6,7 @@ public class CarServEntry {
 	private long date;
 	private int mileage;
 	private int type;
+	private boolean isExpired;
 	
 	//public CarServEntry()
 	
@@ -38,5 +39,11 @@ public class CarServEntry {
 	}
 	public void setType(int type) {
 		this.type = type;
+	}
+	public boolean isExpired() {
+		return isExpired;
+	}
+	public void setExpired(boolean isExpired) {
+		this.isExpired = isExpired;
 	}
 }

@@ -36,6 +36,8 @@ public class CarServProvider extends ContentProvider{
 		sCarServProjectionMap.put(CarServTableMetaData.SERVICE_MILEAGE, CarServTableMetaData.SERVICE_MILEAGE);
 		
 		sCarServProjectionMap.put(CarServTableMetaData.SERVICE_TYPE, 	CarServTableMetaData.SERVICE_TYPE);
+		
+		sCarServProjectionMap.put(CarServTableMetaData.SERVICE_EXPIRED, CarServTableMetaData.SERVICE_EXPIRED);
 	}
 	
 	// Mechanizm umo¿liwiaj¹cy identyfikacjê wzorców wszystkich przychodz¹cych identyfikatorów URI
@@ -75,8 +77,9 @@ public class CarServProvider extends ContentProvider{
 				+CarServProviderMetaData.CarServTableMetaData._ID+" INTEGER PRIMARY KEY, "
 				+CarServTableMetaData.SERVICE_HEADER+" VARCHAR, "
 				+CarServTableMetaData.SERVICE_DATE+" INTEGER, "
-				+CarServTableMetaData.SERVICE_MILEAGE+" INTEGER, "
-				+CarServTableMetaData.SERVICE_TYPE+" INTEGER"
+				+CarServTableMetaData.SERVICE_MILEAGE+" INTEGER, "				
+				+CarServTableMetaData.SERVICE_TYPE+" INTEGER, "
+				+CarServTableMetaData.SERVICE_EXPIRED+" INTEGER"
 				+");");
 			
 
@@ -87,8 +90,9 @@ public class CarServProvider extends ContentProvider{
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 			Log.v("", "Aktualizacja bazy danych z wersji "+ oldVersion + " do wersji "+ newVersion + ". Wszystkie stare dane zostaj¹ usuniête");
-			db.execSQL("DROP TABLE ID EXIST " + CarServTableMetaData.TABLE_NAME);
+			db.execSQL("DROP TABLE IF EXIST " + CarServTableMetaData.TABLE_NAME);
 			onCreate(db);
+//			db.execSQL("ALTER TABLE "+CarServProviderMetaData.CARSERV_TABLE_NAME+" ADD "+CarServTableMetaData.SERVICE_EXPIRED+" INTEGER");	// Cause SQLiteException Can't upgrade read-only data base
 		}
 		
 	}
@@ -188,7 +192,11 @@ public class CarServProvider extends ContentProvider{
 		if(values.containsKey(CarServTableMetaData.SERVICE_TYPE) == false)
 		{
 			throw new IllegalArgumentException("Nieudana próba wstawienia wiersza, brak pola Type: " + uri);
-		}	
+		}
+		if(values.containsKey(CarServTableMetaData.SERVICE_EXPIRED) == false)
+		{
+			throw new IllegalArgumentException("Nieudana próba wstawienia wiersza, brak pola isExpired: " + uri);
+		}		
 		
 		SQLiteDatabase db = mDbHelper.getWritableDatabase();
 		//long rowId = db.insert(CarServTableMetaData.TABLE_NAME, /*null*/CarServTableMetaData.SERVICE_DATE, values);		// ?? CarServTableMetaData.SERVICE_DATE maybe null instead

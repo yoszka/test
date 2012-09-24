@@ -1,9 +1,11 @@
 package pl.xt.jokii.carserv;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import pl.xt.jokii.db.CarServEntry;
 import pl.xt.jokii.db.CarServProviderMetaData;
+import pl.xt.jokii.db.DbUtils;
 import pl.xt.jokii.db.PostDevice;
 import pl.xt.jokii.db.CarServProviderMetaData.CarServTableMetaData;
 import pl.xt.jokii.utils.Connectivity;
@@ -31,6 +33,7 @@ public class NewEntry extends Activity{
 	private CarServEntry carServEntry = null;
 	private String[] items;
 	private Activity activity = this;
+	private DbUtils dbUtils;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +42,13 @@ public class NewEntry extends Activity{
 		
 		setContentView(R.layout.add_new_entry);	
 		
+		dbUtils = new DbUtils(getContentResolver());								// Set content resolver for DbUtils class
 		Intent intent = getIntent();     
 		EntryId = intent.getLongExtra(Car_servActivity.EDIT_ENTRY_RES, 0);	
 		
 		if(0 != EntryId)
 		{
-			carServEntry = getEntryFromDB(EntryId);
+			carServEntry = dbUtils.getEntryFromDB(EntryId);
 		}
 		
 		if(!Connectivity.isOnline(this))	// Check for Internet connection
@@ -128,16 +132,19 @@ public class NewEntry extends Activity{
 				 
 				 long dateStamp = cal.getTimeInMillis();
 				 
-				 Intent 		data 			= new Intent();
+				 Intent	data 		= new Intent();
+				 Date 	currentDate = new Date();
 				 
-				 if(null != carServEntry)
+				 if(null != carServEntry)													// Update entry
 				 {
+					 
 					 carServEntry.setType(selectedType);
 					 carServEntry.setHeader(header);
 					 carServEntry.setMileage(mileage);
 					 carServEntry.setDate(dateStamp);
+					 carServEntry.setExpired(currentDate.getTime() > dateStamp);
 	
-					 updateEntryDB(EntryId, carServEntry);
+					 dbUtils.updateEntryDB(EntryId, carServEntry);
 					 
 					 Car_servActivity.resultsSet.updateEntry(EntryId, carServEntry);
 					 
@@ -146,7 +153,7 @@ public class NewEntry extends Activity{
 					 
 					 NewEntry.this.finish();
 				 }
-				 else
+				 else																		// New entry
 				 {
 	
 //			 		 ContentValues args = new ContentValues();
@@ -161,7 +168,8 @@ public class NewEntry extends Activity{
 					 carServEntry.setHeader(header);
 					 carServEntry.setMileage(mileage);
 					 carServEntry.setDate(dateStamp);
-					 insertEntryDB(carServEntry);
+					 carServEntry.setExpired(currentDate.getTime() > dateStamp);
+					 dbUtils.insertEntryDB(carServEntry);
 					 
 					 if(Connectivity.isOnline(activity))	// Check for Internet connection
 					 {
@@ -172,8 +180,9 @@ public class NewEntry extends Activity{
 							 str.append("HEADER: " 		+ header 				+ "\n");
 							 str.append("MILEAGE: " 	+ mileage 				+ "\n");
 							 str.append("DATESTAMP: "	+ dateStamp 			+ "\n");
-							 str.append("TYPE: " 		+ items[selectedType] 	+ "\n");					 
-							 sendViaPOST(str.toString());
+							 str.append("TYPE: " 		+ items[selectedType] 	+ "\n");
+							 str.append("EXPIRED: " 	+ (currentDate.getTime() > dateStamp) 	+ "\n");
+							 dbUtils.sendViaPOST(str.toString());
 							 // ******* send via POST ********** end
 						 }
 						 catch (Exception e)
@@ -207,91 +216,9 @@ public class NewEntry extends Activity{
 		});
 	}
 	
-	/**
-	* Get complete entry from bata base
-	* @param _ID			- elemnet id from data base
-	* @return CarServEntry - entry from DB
-	*/
-	private CarServEntry getEntryFromDB(long id)
-	{
-		CarServEntry 	carServEntry 	= new CarServEntry();
 
-	    //Cursor cursor = baza.rawQuery("SELECT * FROM CarEvents WHERE _ID = "+id+"",null);
-	  	Cursor cursor = getContentResolver().query(Uri.withAppendedPath(CarServProviderMetaData.CarServTableMetaData.CONTENT_URI, id+""), null, null, null, null);
-
-	    if(cursor.moveToFirst())			//Metoda zwraca FALSE jesli cursor jest pusty
-	    { 
-	    	
-	    	carServEntry.setId		(cursor.getInt		(cursor.getColumnIndex(CarServTableMetaData._ID)));
-	    	carServEntry.setHeader	(cursor.getString	(cursor.getColumnIndex(CarServTableMetaData.SERVICE_HEADER)));
-	    	carServEntry.setMileage	(cursor.getInt		(cursor.getColumnIndex(CarServTableMetaData.SERVICE_MILEAGE)));
-	    	carServEntry.setType	(cursor.getInt		(cursor.getColumnIndex(CarServTableMetaData.SERVICE_TYPE)));
-	    	carServEntry.setDate	(cursor.getLong		(cursor.getColumnIndex(CarServTableMetaData.SERVICE_DATE)));	    	
-	    }
-	    else
-	    {		      
-	      Log.e("ERROR getEntryFromDB", "cursor pusty");         	 
-	    }
-
-	    cursor.close();		
-
-	    return carServEntry;
-	}
 	
 	
-	/**
-	 * Update given entry id in data base with data from carServEntry
-	 * @param _ID			- id of entry in data base
-	 * @param carServEntry	- new values for update
-	 */
-	private void updateEntryDB(long id, CarServEntry carServEntry)
-	{	
-		
-		//String strFilter = "_ID = "+id;
-		ContentValues args = new ContentValues();
-		args.put(CarServTableMetaData.SERVICE_HEADER, 	carServEntry.getHeader());
-		args.put(CarServTableMetaData.SERVICE_DATE, 	carServEntry.getDate());
-		args.put(CarServTableMetaData.SERVICE_MILEAGE,  carServEntry.getMileage());
-		args.put(CarServTableMetaData.SERVICE_TYPE, 	carServEntry.getType());
-		
-		getContentResolver().update(Uri.withAppendedPath(CarServProviderMetaData.CarServTableMetaData.CONTENT_URI, id+""), args, null, null);			
-	}
-	
-	/**
-	 * Update given entry id in data base with data from carServEntry
-	 * @param _ID			- id of entry in data base
-	 * @param carServEntry	- new values for update
-	 */
-	private void insertEntryDB(CarServEntry carServEntry)
-	{	
-		
-		//String strFilter = "_ID = "+id;
-		ContentValues args = new ContentValues();
-		args.put(CarServTableMetaData.SERVICE_HEADER, 	carServEntry.getHeader());
-		args.put(CarServTableMetaData.SERVICE_DATE, 	carServEntry.getDate());
-		args.put(CarServTableMetaData.SERVICE_MILEAGE,  carServEntry.getMileage());
-		args.put(CarServTableMetaData.SERVICE_TYPE, 	carServEntry.getType());
-		
-		getContentResolver().insert(CarServProviderMetaData.CarServTableMetaData.CONTENT_URI, args);
-		//getContentResolver().update(Uri.withAppendedPath(CarServProviderMetaData.CarServTableMetaData.CONTENT_URI, id+""), args, null, null);			
-	}	
-	
-	/**
-	 * Send message to external server
-	 * @param mesage
-	 */
-	private void sendViaPOST(String mesage)
-	{
-		if(mesage.length() > 0)
-		{
-			PostDevice postDevice = new PostDevice("http://www.testeruploadu.w8w.pl/note/index.php?action=new");
-			
-			postDevice.addParameter("tekst"		, mesage);
-			postDevice.addParameter("pas"  		, "carserv");
-			postDevice.addParameter("nots_add"	, "tak");
-			
-			postDevice.send();
-		}
-	}
+
 
 }
