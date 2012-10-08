@@ -1,8 +1,6 @@
 package pl.xt.jokii.carserv;
 
 import java.util.ArrayList;
-import java.util.Date;
-
 import pl.xt.jokii.adapter.EventAdapter;
 import pl.xt.jokii.db.CarServEntry;
 import pl.xt.jokii.db.CarServProviderMetaData;
@@ -13,7 +11,6 @@ import pl.xt.jokii.db.CarServResultsSet;
 
 
 import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -38,7 +35,7 @@ public class Car_servActivity extends Activity {
 	protected final static  int EDIT_ENTRY_REQUEST 		= 1366;						// random number being a key for result
 	protected final static  int UPDATE_ENTRY_REQUEST 	= 1367;						// random number being a key for result
 	private ListView listView							= null;
-	protected static CarServResultsSet resultsSet;//		= new CarServResultsSet();
+	protected static CarServResultsSet resultsSet;
 	private ArrayList<CarServEntry> listEntries 		= new ArrayList<CarServEntry>();
 	private DbUtils dbUtils;
 	
@@ -50,7 +47,6 @@ public class Car_servActivity extends Activity {
         dbUtils = new DbUtils(getContentResolver());								// Set content resolver for DbUtils class
         this.listView = (ListView)findViewById(R.id.listView1);       
         
-//        resultsSet.init();
         	     
     	resultsSet = dbUtils.retrieveResultSet();
     
@@ -148,7 +144,7 @@ public class Car_servActivity extends Activity {
 				        	carServEntryTmp.setType		(cursor.getInt		(cursor.getColumnIndex(CarServTableMetaData.SERVICE_TYPE)));
 				        	carServEntryTmp.setDate		(cursor.getLong		(cursor.getColumnIndex(CarServTableMetaData.SERVICE_DATE)));
 				        	carServEntryTmp.setExpired  (cursor.getInt		(cursor.getColumnIndex(CarServTableMetaData.SERVICE_EXPIRED)) == 1 );
-//				        	Log.v("EXPIRED", carServEntryTmp.isExpired()+"");
+
 				        	resultsSet.addEnd(carServEntryTmp);
 				        	sortByDateDesc();
 			   	         }
