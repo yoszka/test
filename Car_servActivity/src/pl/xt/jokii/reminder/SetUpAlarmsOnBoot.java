@@ -31,11 +31,11 @@ public class SetUpAlarmsOnBoot extends BroadcastReceiver{
 		for(CarServEntry entry : resultsSet.getEntries()){
 			if(!entry.isExpired()){
 				if(entry.getDate() < (cal.getTimeInMillis()/*+1000000000*/)  ){		// Alarm time expired but wasn't shown to user
-					setAlarm(context, entry.getId(), cal.getTimeInMillis());		// Show alarm from 15 second
+					setAlarm(context, entry.getId(), entry.getHeader(), cal.getTimeInMillis());		// Show alarm from 15 second
 //					setAlarm(context, data.getTime());
 					Log.i("RECEIVER", "ALARM time expired: " + entry.getDate());
 				}else{
-					setAlarm(context, entry.getId(), entry.getDate());				// alarm time not expired yet - set up timer
+					setAlarm(context, entry.getId(), entry.getHeader(), entry.getDate());				// alarm time not expired yet - set up timer
 					Log.i("RECEIVER", "ALARM sheduled: " + entry.getDate());
 				}
 			}else{
@@ -45,9 +45,10 @@ public class SetUpAlarmsOnBoot extends BroadcastReceiver{
 	}
 	
 	
-	private void setAlarm(Context context, long id, long time){
+	private void setAlarm(Context context, long id, String text, long time){
 		 Intent intent = new Intent(context, ReminderAlarm.class);
-		 intent.putExtra(ReminderAlarm.ALARM_MESSAGE, id);				// send entry id to update (set expired)
+		 intent.putExtra(ReminderAlarm.ALARM_ENTRY_ID, 	id);				// send entry id to update (set expired)
+		 intent.putExtra(ReminderAlarm.ALARM_TEXT, 		text);				// send entry id to update (set expired)
 		 
 		 PendingIntent sender = PendingIntent.getBroadcast(context, ++idxAlarmMessage, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 		 
