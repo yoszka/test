@@ -136,9 +136,11 @@ public class DbUtils {
 	     }
 	     else
 	     {
+	    	 cursor.close();
 	    	 return null;
 	     }
 		 
+	    cursor.close();
 		return resultsSet;
 	}
 	

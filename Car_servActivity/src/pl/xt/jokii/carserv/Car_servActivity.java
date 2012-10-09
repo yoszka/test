@@ -27,7 +27,7 @@ public class Car_servActivity extends Activity {
 	protected final static  String DB_NAME 				= "mojaBaza";
 	protected final static  String NEW_ENTRY_RES 		= "new_entry";
 	protected final static  String EDIT_ENTRY_RES 		= "edit_entry";
-	protected final static  String SHOW_ITEM_RES 		= "item";
+	public final static  String SHOW_ITEM_RES 		= "item";
 	protected final static  String DELETE_ITEM_RES 		= "delete_item";
 	protected final static  String UPDATE_ITEM_RES 		= "update_item";
 	protected final static  int ADD_NEW_ENTRY_REQUEST 	= 1364;						// random number being a key for result
