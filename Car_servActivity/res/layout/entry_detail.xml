@@ -47,6 +47,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Data" />
+
+    <TextView
+        android:id="@+id/dateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dupa"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <DatePicker
         android:id="@+id/datePickerDetail"

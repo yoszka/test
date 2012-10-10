@@ -54,6 +54,8 @@ public class EventAdapter extends BaseAdapter {
 			throw new NullPointerException("Resource was used but never set before");
 		}
 		
+		//wierszView.setPadding(10,10, 10,10);
+		
 		// TYPE
 		TextView textViewTyp = (TextView)wierszView.findViewById(R.id.textViewTyp);		
 		String[] entryType = this.appResource.getStringArray(R.array.entry_types);
@@ -76,7 +78,9 @@ public class EventAdapter extends BaseAdapter {
 		//calRestored.setTimeInMillis(this.entries.get(position).getDate());            	
 		calRestored.setTimeInMillis(getItem(position).getDate());
 		
-    	textViewDate.setText(calRestored.get(Calendar.DAY_OF_MONTH)+"."+(calRestored.get(Calendar.MONTH)+1)+"."+calRestored.get(Calendar.YEAR));    	
+		String dateString = String.format("%02d.%02d.%d", calRestored.get(Calendar.DAY_OF_MONTH), calRestored.get(Calendar.MONTH), calRestored.get(Calendar.YEAR));
+		textViewDate.setText(dateString);
+//    	textViewDate.setText(calRestored.get(Calendar.DAY_OF_MONTH)+"."+(calRestored.get(Calendar.MONTH)+1)+"."+calRestored.get(Calendar.YEAR));    	
 		
 		
 		return wierszView;

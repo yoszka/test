@@ -49,11 +49,15 @@ public class EntryDetail extends Activity{
         		        	
         	long dateStamp = cursor.getLong(cursor.getColumnIndex("Date"));	 
         	DatePicker datePicker = (DatePicker) findViewById(R.id.datePickerDetail);
+        	datePicker.setVisibility(DatePicker.GONE);
+        	TextView dateTextView = (TextView) findViewById(R.id.dateTextView);
 
 			Calendar calRestored = Calendar.getInstance();
 			calRestored.setTimeInMillis(dateStamp);				
 			
-			datePicker.init(calRestored.get(Calendar.YEAR), calRestored.get(Calendar.MONTH), calRestored.get(Calendar.DAY_OF_MONTH), null);
+			String dateString = String.format("%02d.%02d.%d", calRestored.get(Calendar.DAY_OF_MONTH), calRestored.get(Calendar.MONTH), calRestored.get(Calendar.YEAR));
+			dateTextView.setText(dateString);
+//			datePicker.init(calRestored.get(Calendar.YEAR), calRestored.get(Calendar.MONTH), calRestored.get(Calendar.DAY_OF_MONTH), null);
          }
          else
          {		      
@@ -122,11 +126,15 @@ public class EntryDetail extends Activity{
 				
 	        	long dateStamp = carServEntry.getDate();	 
 	        	DatePicker datePicker = (DatePicker) findViewById(R.id.datePickerDetail);
+	        	datePicker.setVisibility(DatePicker.GONE);
+	        	TextView dateTextView = (TextView) findViewById(R.id.dateTextView);
 
 				Calendar calRestored = Calendar.getInstance();
 				calRestored.setTimeInMillis(dateStamp);
 				
-				datePicker.init(calRestored.get(Calendar.YEAR), calRestored.get(Calendar.MONTH), calRestored.get(Calendar.DAY_OF_MONTH), null);						
+				String dateString = String.format("%02d.%02d.%d", calRestored.get(Calendar.DAY_OF_MONTH), calRestored.get(Calendar.MONTH), calRestored.get(Calendar.YEAR));
+				dateTextView.setText(dateString);
+//				datePicker.init(calRestored.get(Calendar.YEAR), calRestored.get(Calendar.MONTH), calRestored.get(Calendar.DAY_OF_MONTH), null);						
 			}
 		}
 	    else

@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
+import pl.xt.jokii.carserv.R;
 
 public class ReminderAlarm extends BroadcastReceiver{
 	public static String ALARM_TEXT 	= "ALARM_TEXT";
@@ -53,7 +54,7 @@ public class ReminderAlarm extends BroadcastReceiver{
 	 */
 	private void displayNotificationMessage(String message, long entryId) {
 		// For API max 15
-		Notification notification = new Notification(android.R.drawable.ic_notification_overlay, message, System.currentTimeMillis());
+		Notification notification = new Notification(R.drawable.vw_passat_sml_ico, message, System.currentTimeMillis());
 	    // Hide the notification after its selected
 	    notification.flags |= Notification.FLAG_AUTO_CANCEL;	    	    
 		
