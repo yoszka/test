@@ -119,17 +119,17 @@ public class Car_servActivity extends Activity {
 
 	    // If the request went well (OK) and the request was ADD_NEW_ENTRY_REQUEST
 	    if (resultCode == Activity.RESULT_OK) 
-	    {
+	    {	
 	    	if(requestCode == ADD_NEW_ENTRY_REQUEST)
 	    	{
 		    	// Add the newest on Top
-		    	int newId = data.getIntExtra(NEW_ENTRY_RES, -1);
-		    	
+		    	long newId = data.getLongExtra(NEW_ENTRY_RES, -1);
+	
 		    	if(newId != -1)
 		    	{
 		    		 Cursor cursor = null;		
 			   	    	 
-			   	    	 // Stworzenie URI na potrzeby zapytania			   	    	
+			   	    	 // Utworzenie URI na potrzeby zapytania			   	    	
 			   	    	 cursor = getContentResolver().query(Uri.withAppendedPath(CarServProviderMetaData.CarServTableMetaData.CONTENT_URI, newId+""), null, null, null, null);			   	       
 			   	       
 			   	         if(cursor.moveToFirst())			//Metoda zwraca FALSE jesli cursor jest pusty
@@ -165,12 +165,12 @@ public class Car_servActivity extends Activity {
 	    		
 	    		resultsSet.deleteEntryId(EntryId);
 	    		sortByDateDesc();
-	    		Toast.makeText(getApplicationContext(), "Deleted", Toast.LENGTH_SHORT).show();	    		
+	    		Toast.makeText(getApplicationContext(), getResources().getString(R.string.deleted)+"", Toast.LENGTH_SHORT).show();	    		
 	    	}
 	    }
 	    else
 	    {
-	    	Toast.makeText(getApplicationContext(), "Canceled", Toast.LENGTH_SHORT).show();
+	    	Toast.makeText(getApplicationContext(), getResources().getString(R.string.canceled)+"", Toast.LENGTH_SHORT).show();
 	    }    	
     }
 

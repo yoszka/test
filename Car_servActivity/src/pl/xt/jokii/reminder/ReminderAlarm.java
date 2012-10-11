@@ -14,8 +14,7 @@ import android.widget.Toast;
 import pl.xt.jokii.carserv.R;
 
 public class ReminderAlarm extends BroadcastReceiver{
-	public static String ALARM_TEXT 	= "ALARM_TEXT";
-	public static String ALARM_ENTRY_ID = "ALARM_ENTRY_ID";
+
 	private NotificationManager notificationManager;
 	private Context mContext;
 //	private static int requestCode = 0;
@@ -27,8 +26,8 @@ public class ReminderAlarm extends BroadcastReceiver{
 		
 		mContext = context;
 		if(intent != null){
-			entryId = intent.getLongExtra(ALARM_ENTRY_ID, 0);
-			alarmText = intent.getStringExtra(ALARM_TEXT);
+			entryId = intent.getLongExtra(AlarmUtil.ALARM_ENTRY_ID, 0);
+			alarmText = intent.getStringExtra(AlarmUtil.ALARM_TEXT);
 		}
 		
 		Log.w("RECEIVER", "ALARM: ID=" + entryId + ", text: " + alarmText);				

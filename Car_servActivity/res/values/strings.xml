@@ -2,12 +2,27 @@
 <resources>
 
     <string name="hello">Hello World, Car_servActivity!</string>
-    <string name="app_name">Car_serv</string>
-    <string name="button_add_new">Add new</string>
+    <string name="app_name">Car servis</string>
+    <string name="button_add_new">Dodaj nowy</string>
     <string name="choose_value">Wybierz typ</string>
-    <string name="delete_dialog_text">Delete?</string>
+    <string name="delete_dialog_text">Usunąć?</string>
     <string name="btn_delete_dialog_ok_label">OK</string>
-    <string name="btn_delete_dialog_cancel_label">Cancel</string>
+    <string name="btn_delete_dialog_cancel_label">Anuluj</string>
+    
+    <string name="type">Typ</string>
+    <string name="note">Notatka</string>
+    <string name="mileage">Przebieg</string>
+    <string name="date">Termin</string>
+    <string name="button_ok_label">OK</string>
+    <string name="other">Inne</string>
+    <string name="add_date">Data dodania</string>
+    
+    <string name="canceled">Anulowano</string>
+    <string name="deleted">Usunięto</string>
+    <string name="no_internet_connection">Brak połączenia do Internetu</string>
+    <string name="connection_error_update_local">Błąd połączenia\nZaktualizowano lokalną bazę danych</string>
+    <string name="updated_local_db">Zaktualizowano lokalną bazę danych</string>
+    <string name="alarm_set_on">Alarm ustawiono na</string>
     
     <string-array name="entry_types"> 							<!-- Tablica stringow -->
         <item >Inne</item>

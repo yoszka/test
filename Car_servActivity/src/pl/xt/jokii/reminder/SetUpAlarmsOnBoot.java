@@ -4,8 +4,6 @@ import java.util.Calendar;
 import pl.xt.jokii.db.CarServEntry;
 import pl.xt.jokii.db.CarServResultsSet;
 import pl.xt.jokii.db.DbUtils;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -31,11 +29,11 @@ public class SetUpAlarmsOnBoot extends BroadcastReceiver{
 		for(CarServEntry entry : resultsSet.getEntries()){
 			if(!entry.isExpired()){
 				if(entry.getDate() < (cal.getTimeInMillis()/*+1000000000*/)  ){		// Alarm time expired but wasn't shown to user
-					setAlarm(context, entry.getId(), entry.getHeader(), cal.getTimeInMillis());		// Show alarm from 15 second
-//					setAlarm(context, data.getTime());
+					AlarmUtil.setAlarm(context, entry.getId(), entry.getHeader(), cal.getTimeInMillis());		// Show alarm from 15 second
+//					AlarmUtil.setAlarm(context, data.getTime());
 					Log.i("RECEIVER", "ALARM time expired: " + entry.getDate());
 				}else{
-					setAlarm(context, entry.getId(), entry.getHeader(), entry.getDate());				// alarm time not expired yet - set up timer
+					AlarmUtil.setAlarm(context, entry.getId(), entry.getHeader(), entry.getDate());				// alarm time not expired yet - set up timer
 					Log.i("RECEIVER", "ALARM sheduled: " + entry.getDate());
 				}
 			}else{
@@ -45,16 +43,16 @@ public class SetUpAlarmsOnBoot extends BroadcastReceiver{
 	}
 	
 	
-	private void setAlarm(Context context, long id, String text, long time){
-		 Intent intent = new Intent(context, ReminderAlarm.class);
-		 intent.putExtra(ReminderAlarm.ALARM_ENTRY_ID, 	id);				// send entry id to update (set expired)
-		 intent.putExtra(ReminderAlarm.ALARM_TEXT, 		text);				// send entry id to update (set expired)
-		 
-		 PendingIntent sender = PendingIntent.getBroadcast(context, ++idxAlarmMessage, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-		 
-		 // Get the AlarmManager service
-		 AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-		 am.set(AlarmManager.RTC_WAKEUP, time, sender);		
-	}
+//	private void setAlarm(Context context, long id, String text, long time){
+//		 Intent intent = new Intent(context, ReminderAlarm.class);
+//		 intent.putExtra(ReminderAlarm.ALARM_ENTRY_ID, 	id);				// send entry id to update (set expired)
+//		 intent.putExtra(ReminderAlarm.ALARM_TEXT, 		text);				// send entry id to update (set expired)
+//		 
+//		 PendingIntent sender = PendingIntent.getBroadcast(context, ++idxAlarmMessage, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+//		 
+//		 // Get the AlarmManager service
+//		 AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+//		 am.set(AlarmManager.RTC_WAKEUP, time, sender);		
+//	}
 
 }

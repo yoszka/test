@@ -78,7 +78,7 @@ public class EventAdapter extends BaseAdapter {
 		//calRestored.setTimeInMillis(this.entries.get(position).getDate());            	
 		calRestored.setTimeInMillis(getItem(position).getDate());
 		
-		String dateString = String.format("%02d.%02d.%d", calRestored.get(Calendar.DAY_OF_MONTH), calRestored.get(Calendar.MONTH), calRestored.get(Calendar.YEAR));
+		String dateString = String.format("%02d.%02d.%d", calRestored.get(Calendar.DAY_OF_MONTH), calRestored.get(Calendar.MONTH)+1, calRestored.get(Calendar.YEAR));
 		textViewDate.setText(dateString);
 //    	textViewDate.setText(calRestored.get(Calendar.DAY_OF_MONTH)+"."+(calRestored.get(Calendar.MONTH)+1)+"."+calRestored.get(Calendar.YEAR));    	
 		

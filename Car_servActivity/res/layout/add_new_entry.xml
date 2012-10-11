@@ -15,7 +15,7 @@
 		        android:id="@+id/textView4"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:text="Type"
+		        android:text="@string/type"
 		        android:textAppearance="?android:attr/textAppearanceSmall" 
 		        android:layout_weight="0"/>				
 		
@@ -33,7 +33,7 @@
 		        android:id="@+id/textView2"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:text="Nagłówek" 
+		        android:text="@string/note" 
 		        android:layout_weight="0"/>
 		
 		
@@ -50,7 +50,7 @@
 		        android:id="@+id/textView3"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:text="Przebieg" 
+		        android:text="@string/mileage" 
 		        android:layout_weight="0"/>
 		
 				    		
@@ -68,7 +68,7 @@
 		        android:id="@+id/textView1"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:text="Termin" 
+		        android:text="@string/date" 
 		        android:layout_weight="0"/>
 				
 		    <DatePicker
@@ -88,7 +88,7 @@
 		            android:layout_width="match_parent"
 		            android:layout_height="wrap_content"
 		            android:layout_gravity="bottom"
-		            android:text="OK" />
+		            android:text="@string/button_ok_label" />
 		
 		    </LinearLayout> 
 

@@ -55,7 +55,7 @@ public class EntryDetail extends Activity{
 			Calendar calRestored = Calendar.getInstance();
 			calRestored.setTimeInMillis(dateStamp);				
 			
-			String dateString = String.format("%02d.%02d.%d", calRestored.get(Calendar.DAY_OF_MONTH), calRestored.get(Calendar.MONTH), calRestored.get(Calendar.YEAR));
+			String dateString = String.format("%02d.%02d.%d", calRestored.get(Calendar.DAY_OF_MONTH), calRestored.get(Calendar.MONTH)+1, calRestored.get(Calendar.YEAR));
 			dateTextView.setText(dateString);
 //			datePicker.init(calRestored.get(Calendar.YEAR), calRestored.get(Calendar.MONTH), calRestored.get(Calendar.DAY_OF_MONTH), null);
          }
@@ -132,7 +132,7 @@ public class EntryDetail extends Activity{
 				Calendar calRestored = Calendar.getInstance();
 				calRestored.setTimeInMillis(dateStamp);
 				
-				String dateString = String.format("%02d.%02d.%d", calRestored.get(Calendar.DAY_OF_MONTH), calRestored.get(Calendar.MONTH), calRestored.get(Calendar.YEAR));
+				String dateString = String.format("%02d.%02d.%d", calRestored.get(Calendar.DAY_OF_MONTH), calRestored.get(Calendar.MONTH)+1, calRestored.get(Calendar.YEAR));
 				dateTextView.setText(dateString);
 //				datePicker.init(calRestored.get(Calendar.YEAR), calRestored.get(Calendar.MONTH), calRestored.get(Calendar.DAY_OF_MONTH), null);						
 			}

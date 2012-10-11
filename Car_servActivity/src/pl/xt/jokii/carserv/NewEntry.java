@@ -6,15 +6,13 @@ import java.util.Date;
 import pl.xt.jokii.db.CarServEntry;
 import pl.xt.jokii.db.CarServProviderMetaData;
 import pl.xt.jokii.db.DbUtils;
-import pl.xt.jokii.db.PostDevice;
 import pl.xt.jokii.db.CarServProviderMetaData.CarServTableMetaData;
+import pl.xt.jokii.reminder.AlarmUtil;
 import pl.xt.jokii.utils.Connectivity;
 
 import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -53,7 +51,7 @@ public class NewEntry extends Activity{
 		
 		if(!Connectivity.isOnline(this))	// Check for Internet connection
 		{
-			Toast.makeText(getApplicationContext(), "No Inernet connection", Toast.LENGTH_SHORT).show();
+			Toast.makeText(getApplicationContext(), getResources().getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
 		}
 		
 		// SPINNER ***********************************************************************************************
@@ -131,6 +129,7 @@ public class NewEntry extends Activity{
 				 cal.set(Calendar.DAY_OF_MONTH, datePicker.getDayOfMonth());
 				 
 				 long dateStamp = cal.getTimeInMillis();
+				 String dateString = String.format("\n%02d.%02d.%d", cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH)+1, cal.get(Calendar.YEAR));
 				 
 				 Intent	data 		= new Intent();
 				 Date 	currentDate = new Date();
@@ -148,14 +147,18 @@ public class NewEntry extends Activity{
 					 
 					 Car_servActivity.resultsSet.updateEntry(EntryId, carServEntry);
 					 
+					 // Set up Alarm
+					 AlarmUtil.setAlarm(getApplicationContext(), EntryId, header, dateStamp);					 
+	   	    		 
+	   	    		 Toast.makeText(getApplicationContext(), getResources().getString(R.string.alarm_set_on) + dateString, Toast.LENGTH_SHORT).show();					 
+					 
 	   	        	 data.putExtra(Car_servActivity.UPDATE_ITEM_RES, EntryId);
 	   	        	 NewEntry.this.setResult(Activity.RESULT_OK, data);						 
 					 
 					 NewEntry.this.finish();
 				 }
 				 else																		// New entry
-				 {
-	
+				 {	
 //			 		 ContentValues args = new ContentValues();
 //					 args.put(CarServTableMetaData.SERVICE_HEADER, 	header);
 //					 args.put(CarServTableMetaData.SERVICE_DATE, 	dateStamp);
@@ -169,7 +172,9 @@ public class NewEntry extends Activity{
 					 carServEntry.setMileage(mileage);
 					 carServEntry.setDate(dateStamp);
 					 carServEntry.setExpired(currentDate.getTime() > dateStamp);
-					 dbUtils.insertEntryDB(carServEntry);
+					 dbUtils.insertEntryDB(carServEntry);	
+					 
+					 
 					 
 					 if(Connectivity.isOnline(activity))	// Check for Internet connection
 					 {
@@ -187,26 +192,34 @@ public class NewEntry extends Activity{
 						 }
 						 catch (Exception e)
 						 {
-							 Toast.makeText(getApplicationContext(), "Connection error\nUpdated local DB", Toast.LENGTH_SHORT).show();
+							 Toast.makeText(getApplicationContext(), getResources().getString(R.string.connection_error_update_local)+"", Toast.LENGTH_SHORT).show();
 						 }
 						 
 					 }
 					 else
 					 {
-						 Toast.makeText(getApplicationContext(), "Updated local DB", Toast.LENGTH_SHORT).show();
+						 Toast.makeText(getApplicationContext(), getResources().getString(R.string.updated_local_db)+"", Toast.LENGTH_SHORT).show();
 					 }	 
 						 
 		   	    	 Cursor cursor = getContentResolver().query(CarServProviderMetaData.CarServTableMetaData.CONTENT_URI, new String[]{CarServTableMetaData._ID}, null, null, CarServTableMetaData._ID + " DESC"); // kolumna "_id", bez kluzuli WHERE, bez WHERE argumentów, sortowanie DESC
-		   	       
-		   	         if(cursor.moveToFirst())			//Metoda zwraca FALSE jesli cursor jest pusty
-		   	         { 		   	        	 
-		   	        	data.putExtra(Car_servActivity.NEW_ENTRY_RES, cursor.getInt(cursor.getColumnIndex(CarServTableMetaData._ID)));
-		   	        	NewEntry.this.setResult(Activity.RESULT_OK, data);
-		   	         }
-		   	         else
-		   	         {		      
-		   	        	Log.e("ERROR GET CURSOR ID", "cursor pusty");       	 
-		   	         }   
+		   	       	
+		   	    	 if(cursor.moveToFirst())			//Metoda zwraca FALSE jesli cursor jest pusty
+		   	    	 { 		 
+		   	    		 EntryId = cursor.getInt(cursor.getColumnIndex(CarServTableMetaData._ID));
+		   	    		 data.putExtra(Car_servActivity.NEW_ENTRY_RES, EntryId);		   	    		 
+
+		   	    		 // Set up Alarm
+		   	    		 AlarmUtil.setAlarm(getApplicationContext(), EntryId, header, dateStamp);
+
+		   	    		 Toast.makeText(getApplicationContext(), getResources().getString(R.string.alarm_set_on) + dateString, Toast.LENGTH_SHORT).show();
+		   	    		 Toast.makeText(getApplicationContext(), getResources().getString(R.string.updated_local_db)+"", Toast.LENGTH_SHORT).show();
+
+		   	    		 NewEntry.this.setResult(Activity.RESULT_OK, data);
+		   	    	 }
+		   	    	 else
+		   	    	 {		      
+		   	    		 Log.e("ERROR GET CURSOR ID", "cursor pusty");       	 
+		   	    	 }   
 		   	         cursor.close();					   	         
 												                     
 			     	NewEntry.this.finish(); 
@@ -215,10 +228,4 @@ public class NewEntry extends Activity{
 			}
 		});
 	}
-	
-
-	
-	
-
-
 }

@@ -7,52 +7,49 @@
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Typ" />
+        android:text="@string/type" />
 
     <TextView
         android:id="@+id/textViewDetailType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Inne"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nagłówek" />
+        android:text="@string/note" />
 
     <TextView
         android:id="@+id/textViewDetailHeader"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sprawdz silnik"
+        android:layout_height="wrap_content"        
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Przebieg" />
+        android:text="@string/mileage" />
 
     <TextView
         android:id="@+id/textViewDeteailMileage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="83125"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Data" />
+        android:text="@string/date" />
 
     <TextView
         android:id="@+id/dateTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Dupa"
+        android:text=""
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <DatePicker
