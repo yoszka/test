@@ -23,6 +23,7 @@
     <string name="connection_error_update_local">Błąd połączenia\nZaktualizowano lokalną bazę danych</string>
     <string name="updated_local_db">Zaktualizowano lokalną bazę danych</string>
     <string name="alarm_set_on">Alarm ustawiono na</string>
+    <string name="edit">Edytuj</string>
     
     <string-array name="entry_types"> 							<!-- Tablica stringow -->
         <item >Inne</item>

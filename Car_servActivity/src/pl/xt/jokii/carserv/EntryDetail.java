@@ -13,7 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.DatePicker;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,8 +48,8 @@ public class EntryDetail extends Activity{
         	tv3.setText(RowString);	
         		        	
         	long dateStamp = cursor.getLong(cursor.getColumnIndex("Date"));	 
-        	DatePicker datePicker = (DatePicker) findViewById(R.id.datePickerDetail);
-        	datePicker.setVisibility(DatePicker.GONE);
+//        	DatePicker datePicker = (DatePicker) findViewById(R.id.datePickerDetail);
+//        	datePicker.setVisibility(DatePicker.GONE);
         	TextView dateTextView = (TextView) findViewById(R.id.dateTextView);
 
 			Calendar calRestored = Calendar.getInstance();
@@ -73,7 +73,7 @@ public class EntryDetail extends Activity{
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		
-    	menu.add(Menu.NONE, Menu.FLAG_APPEND_TO_GROUP+1, Menu.FIRST,   "Edit");
+    	menu.add(Menu.NONE, Menu.FLAG_APPEND_TO_GROUP+1, Menu.FIRST, getResources().getString(R.string.edit));
     	//menu.add(Menu.NONE, Menu.FLAG_APPEND_TO_GROUP+2, Menu.FIRST+1, "Exit");
     	
     	// show menu
@@ -86,9 +86,7 @@ public class EntryDetail extends Activity{
     	switch(item.getItemId())
     	{    	
     	case (Menu.FLAG_APPEND_TO_GROUP+1):
-    		Intent intent = new Intent(getApplicationContext(), NewEntry.class);
-    		intent.putExtra(Car_servActivity.EDIT_ENTRY_RES, EntryID);
-    		startActivityForResult(intent, Car_servActivity.EDIT_ENTRY_REQUEST);
+    		editEntry();
     		break;    	
 //    	case (Menu.FLAG_APPEND_TO_GROUP+2):
 //    		Toast.makeText(this, "Exit", Toast.LENGTH_SHORT).show();
@@ -125,8 +123,8 @@ public class EntryDetail extends Activity{
 				tv33.setText(carServEntry.getMileage()+"");
 				
 	        	long dateStamp = carServEntry.getDate();	 
-	        	DatePicker datePicker = (DatePicker) findViewById(R.id.datePickerDetail);
-	        	datePicker.setVisibility(DatePicker.GONE);
+//	        	DatePicker datePicker = (DatePicker) findViewById(R.id.datePickerDetail);
+//	        	datePicker.setVisibility(DatePicker.GONE);
 	        	TextView dateTextView = (TextView) findViewById(R.id.dateTextView);
 
 				Calendar calRestored = Calendar.getInstance();
@@ -141,6 +139,24 @@ public class EntryDetail extends Activity{
 	    {
 	    	Toast.makeText(getApplicationContext(), "Canceled", Toast.LENGTH_SHORT).show();
 	    }		
+	}
+	
+	/*
+	 * Edit this entry
+	 */
+	private void editEntry(){
+		Intent intent = new Intent(getApplicationContext(), NewEntry.class);
+		intent.putExtra(Car_servActivity.EDIT_ENTRY_RES, EntryID);
+		startActivityForResult(intent, Car_servActivity.EDIT_ENTRY_REQUEST);		
+	}
+	
+	
+	/**
+	 * Callback method for click button
+	 * @param v - related view
+	 */
+	public void onClickEditEntry(View v){
+		editEntry();
 	}
 
 }

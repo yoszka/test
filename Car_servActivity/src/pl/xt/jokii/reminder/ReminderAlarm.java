@@ -1,5 +1,7 @@
 package pl.xt.jokii.reminder;
 
+import java.io.IOException;
+
 import pl.xt.jokii.carserv.Car_servActivity;
 import pl.xt.jokii.db.CarServEntry;
 import pl.xt.jokii.db.DbUtils;
@@ -9,6 +11,12 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 import pl.xt.jokii.carserv.R;
@@ -32,7 +40,7 @@ public class ReminderAlarm extends BroadcastReceiver{
 		
 		Log.w("RECEIVER", "ALARM: ID=" + entryId + ", text: " + alarmText);				
 		
-		Toast.makeText(context, "Car_Serv: " + alarmText, Toast.LENGTH_LONG).show();
+//		Toast.makeText(context, "Car_Serv: " + alarmText, Toast.LENGTH_LONG).show();
 		
 		// Make this entry EXPIRED
 		DbUtils dbUtilDriver = new DbUtils(context.getContentResolver());
@@ -42,11 +50,12 @@ public class ReminderAlarm extends BroadcastReceiver{
 		
 		// Display notification in status bar
 		notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-		displayNotificationMessage(alarmText, entryId);		
+		displayNotificationMessage(alarmText, entryId);	
+		playLocalAudio(context);
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Display notification in status bar
 	 * @param message
@@ -85,6 +94,39 @@ public class ReminderAlarm extends BroadcastReceiver{
 //		
 //		notificationManager.notify(android.R.id.message, notification);		// android.R.id.message -> some ID can be random number
 		
+	}	
+	
+	
+	private void playLocalAudio(Context context) {
+		final AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
+		if (audioManager.getStreamVolume(AudioManager.STREAM_NOTIFICATION) != 0) {
+			
+			// Read current levels
+			final int volumeMusic = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+			final int volumeNotif = audioManager.getStreamVolume(AudioManager.STREAM_NOTIFICATION);		
+			
+			// read max levels
+			final int maxVolumeMusic = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+			final int maxVolumeNotif = audioManager.getStreamMaxVolume(AudioManager.STREAM_NOTIFICATION);
+			
+			// set volume for stream music same as for notification
+			audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, (volumeNotif * maxVolumeMusic) / maxVolumeNotif, 0);
+			
+//			Log.v("ALARM volumeMusic", ((volumeNotif * maxVolumeMusic) / maxVolumeNotif)+"");
+//			Log.v("ALARM volumeNotif", volumeNotif+"");			
+			
+			MediaPlayer mediaPlayer = MediaPlayer.create(context, R.raw.boathorn);
+			mediaPlayer.start();
+			mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
+				
+				public void onCompletion(MediaPlayer mp) {
+					// Get back to orginal volume level
+					audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, volumeMusic, 0);
+//					Log.v("ALARM volumeMusic", volumeMusic+"");
+//					Log.v("ALARM volumeNotif", volumeNotif+"");					
+				}
+			});
+		}	
 	}	
 
 }
