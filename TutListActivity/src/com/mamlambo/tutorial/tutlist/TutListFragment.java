@@ -97,6 +97,7 @@ public class TutListFragment extends ListFragment implements LoaderManager.Loade
                     + " must implement OnTutSelectedListener");
         }
     }
+    
 
     // LoaderManager.LoaderCallbacks<Cursor> methods
 

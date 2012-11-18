@@ -1,0 +1,2 @@
+1. Backup and restore feature
+2. Add icons for items

@@ -11,14 +11,14 @@
         android:layout_height="40dp"
         android:onClick="onAddNewEntry"
         android:text="@string/button_add_new" />
-
+
     <ListView
         android:id="@+id/listView1"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="5"
         android:divider="@android:color/transparent"
-        android:dividerHeight="20.0sp"
+        android:dividerHeight="10.0sp"
         android:paddingLeft="10.0sp"
         android:paddingRight="10.0sp"
         android:paddingTop="10.0sp" >

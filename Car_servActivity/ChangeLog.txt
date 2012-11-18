@@ -1,0 +1,1 @@
+1.6.3 - changed dividerHeight in ListView 20sp -> 10sp

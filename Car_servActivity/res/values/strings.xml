@@ -27,6 +27,7 @@
     
     <string-array name="entry_types"> 							<!-- Tablica stringow -->
         <item >Inne</item>
+        <item >Akumulator</item>
         <item >Filtr paliwa</item>
         <item >Filtr powietrza</item>
         <item >Filtr pyłków</item>        
