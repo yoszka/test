@@ -24,6 +24,8 @@
     <string name="updated_local_db">Zaktualizowano lokalną bazę danych</string>
     <string name="alarm_set_on">Alarm ustawiono na</string>
     <string name="edit">Edytuj</string>
+    <string name="import_entries">Import</string>
+    <string name="export_entries">Export</string>
     
     <string-array name="entry_types"> 							<!-- Tablica stringow -->
         <item >Inne</item>

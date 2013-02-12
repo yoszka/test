@@ -1,12 +1,19 @@
 package pl.xt.jokii.carserv;
 
 import java.util.ArrayList;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONStringer;
+
 import pl.xt.jokii.adapter.EventAdapter;
 import pl.xt.jokii.db.CarServEntry;
 import pl.xt.jokii.db.CarServProviderMetaData;
 import pl.xt.jokii.db.DbUtils;
 import pl.xt.jokii.db.CarServProviderMetaData.CarServTableMetaData;
 import pl.xt.jokii.db.CarServResultsSet;
+import pl.xt.jokii.utils.ImportExportBackup;
 
 
 
@@ -16,6 +23,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -24,6 +33,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 public class Car_servActivity extends Activity {
+	private static final String TAG = "Car_servActivity";
+	
 	protected final static  String DB_NAME 				= "mojaBaza";
 	protected final static  String NEW_ENTRY_RES 		= "new_entry";
 	protected final static  String EDIT_ENTRY_RES 		= "edit_entry";
@@ -38,6 +49,7 @@ public class Car_servActivity extends Activity {
 	protected static CarServResultsSet resultsSet;
 	private ArrayList<CarServEntry> listEntries 		= new ArrayList<CarServEntry>();
 	private DbUtils dbUtils;
+	
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -173,6 +185,74 @@ public class Car_servActivity extends Activity {
 	    	Toast.makeText(getApplicationContext(), getResources().getString(R.string.canceled)+"", Toast.LENGTH_SHORT).show();
 	    }    	
     }
+    
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		
+		menu.add(Menu.NONE, Menu.FIRST, 	Menu.FIRST, 	getResources().getString(R.string.import_entries));
+    	menu.add(Menu.NONE, Menu.FIRST+1, 	Menu.FIRST+1, 	getResources().getString(R.string.export_entries));
+    	
+    	// show menu
+    	return true;		
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		
+    	switch(item.getItemId())
+    	{    	
+    	case (Menu.FIRST):
+			String readedFromFile = ImportExportBackup.readFromBackupFile();
+    		Log.i(TAG, "Odczyt z pliku, tekst \""+readedFromFile+"\"");
+    		try {
+				JSONArray jArrayReaded = new JSONArray(readedFromFile);
+				
+				for(int i = 0; i < jArrayReaded.length(); i++){
+					JSONObject entryElement =  (JSONObject) jArrayReaded.get(i);
+					
+					String name 		= entryElement.getString("name");
+					String proffession 	= entryElement.getString("proffession");
+					Integer age 		= entryElement.getInt("age");
+					
+					Log.v(TAG, "name: " + name + ", proffession: " + proffession + ", age: " + age);
+				}
+			} catch (JSONException e1) {
+				e1.printStackTrace();
+			}
+	    	break;  
+	    	
+    	case (Menu.FIRST+1):
+	    	JSONArray jArrayAll = new JSONArray();
+	    	try {
+	    		JSONObject entry = new JSONObject();
+	    		
+	    		entry.put("name", "Janek");	
+	    		entry.put("proffession", "cleaner");
+	    		entry.put("age", "20");	
+	    		
+	    		jArrayAll.put(entry);
+	    		
+	    		//
+	    		entry = new JSONObject();
+	    		entry.put("name", "Tomek");	
+	    		entry.put("proffession", "programmer");
+	    		entry.put("age", "27");	
+	    		
+	    		jArrayAll.put(entry);	
+	    		
+	    	} catch (JSONException e) {
+	    		e.printStackTrace();
+	    	}
+    		ImportExportBackup.writeToBackupFile(jArrayAll.toString());
+    		Log.i(TAG, "Zapis do pliku");
+    		break;    	
+    	default:
+    		return super.onOptionsItemSelected(item);
+    	}
+    	
+    	return true;
+	}    
 
     
     // BUTTONs ***********************************************************************
