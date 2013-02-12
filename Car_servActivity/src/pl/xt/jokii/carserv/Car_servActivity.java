@@ -18,10 +18,12 @@ import pl.xt.jokii.utils.ImportExportBackup;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,13 +40,20 @@ public class Car_servActivity extends Activity {
 	protected final static  String DB_NAME 				= "mojaBaza";
 	protected final static  String NEW_ENTRY_RES 		= "new_entry";
 	protected final static  String EDIT_ENTRY_RES 		= "edit_entry";
-	public final static  String SHOW_ITEM_RES 		= "item";
+	public final static  	String SHOW_ITEM_RES 		= "item";
+	protected final static  String ACTION_ITEM_RES 		= "action_item";
+	protected final static  String HEADER_ITEM_RES 		= "header_item";
 	protected final static  String DELETE_ITEM_RES 		= "delete_item";
 	protected final static  String UPDATE_ITEM_RES 		= "update_item";
 	protected final static  int ADD_NEW_ENTRY_REQUEST 	= 1364;						// random number being a key for result
 	protected final static  int DELETE_ENTRY_REQUEST 	= 1365;						// random number being a key for result
 	protected final static  int EDIT_ENTRY_REQUEST 		= 1366;						// random number being a key for result
-	protected final static  int UPDATE_ENTRY_REQUEST 	= 1367;						// random number being a key for result
+	protected final static  int IMPORT_ENTRY_REQUEST 	= 1367;						// random number being a key for result
+	protected final static  int EXPORT_ENTRY_REQUEST 	= 1368;						// random number being a key for result
+	protected final static  int UPDATE_ENTRY_REQUEST 	= 1369;						// random number being a key for result
+	protected final static  int DIALOG_ACTION_DELETE 	= 1;
+	protected final static  int DIALOG_ACTION_IMPORT 	= 2;
+	protected final static  int DIALOG_ACTION_EXPORT 	= 3;
 	private ListView listView							= null;
 	protected static CarServResultsSet resultsSet;
 	private ArrayList<CarServEntry> listEntries 		= new ArrayList<CarServEntry>();
@@ -61,32 +70,39 @@ public class Car_servActivity extends Activity {
         
         	     
     	resultsSet = dbUtils.retrieveResultSet();
+    	
+		 // If empty create new empty set
+		 if(resultsSet == null){
+			 resultsSet = new CarServResultsSet();
+			 resultsSet.init();
+		 }
     
-    	 if(resultsSet == null)
-         {
-        	 Log.v("cursor", "NO DATA, creating some");	        	         	 				 				 
-			 
-			 CarServEntry carServEntryTmp = new CarServEntry();
-			 
-			 carServEntryTmp.setType(0);
-			 carServEntryTmp.setHeader("Pierwszy");
-			 carServEntryTmp.setMileage(99999);
-			 carServEntryTmp.setDate(1262304000000L);
-			 carServEntryTmp.setExpired(true);
-			 
-			 dbUtils.insertEntryDB(carServEntryTmp);				 
-			 
-			 // Then read again from data base
-			 resultsSet = dbUtils.retrieveResultSet();
-			 
-			 // If something goes wrong create new empty set
-			 if(resultsSet == null)
-			 {
-				 resultsSet = new CarServResultsSet();
-				 resultsSet.init();
-				 Log.e("WARNING", "resultsSet wasn't properly initialized!");
-			 }				 		        
-         }
+    	// Adding dummy entry
+//    	 if(resultsSet == null)
+//         {
+//        	 Log.v("cursor", "NO DATA, creating some");	        	         	 				 				 
+//			 
+//			 CarServEntry carServEntryTmp = new CarServEntry();
+//			 
+//			 carServEntryTmp.setType(0);
+//			 carServEntryTmp.setHeader("Pierwszy");
+//			 carServEntryTmp.setMileage(99999);
+//			 carServEntryTmp.setDate(1262304000000L);
+//			 carServEntryTmp.setExpired(true);
+//			 
+//			 dbUtils.insertEntryDB(carServEntryTmp);				 
+//			 
+//			 // Then read again from data base
+//			 resultsSet = dbUtils.retrieveResultSet();
+//			 
+//			 // If something goes wrong create new empty set
+//			 if(resultsSet == null)
+//			 {
+//				 resultsSet = new CarServResultsSet();
+//				 resultsSet.init();
+//				 Log.e("WARNING", "resultsSet wasn't properly initialized!");
+//			 }				 		        
+//         }
          
          
          this.listView.setOnItemLongClickListener(new OnItemLongClickListener() {
@@ -95,6 +111,8 @@ public class Car_servActivity extends Activity {
 
 					Intent intent = new Intent(getApplicationContext(), DialogActivity.class);
 					intent.putExtra(DELETE_ITEM_RES, resultsSet.getEntries().get(position).getId());
+					intent.putExtra(HEADER_ITEM_RES, getResources().getString(R.string.delete_dialog_text));
+					intent.putExtra(ACTION_ITEM_RES, DIALOG_ACTION_DELETE);
 					startActivityForResult(intent, DELETE_ENTRY_REQUEST);
 					return true;
 				}
@@ -115,8 +133,10 @@ public class Car_servActivity extends Activity {
 				}
 		});
          
-    	listEntries.clear();	    
-    	listEntries.addAll(resultsSet.getEntries());
+        listEntries.clear();	    
+        if(resultsSet != null){
+        	listEntries.addAll(resultsSet.getEntries());
+        }
          
      	EventAdapter ea = new EventAdapter(listEntries, getLayoutInflater());
      	ea.setResource(getResources());
@@ -177,7 +197,26 @@ public class Car_servActivity extends Activity {
 	    		
 	    		resultsSet.deleteEntryId(EntryId);
 	    		sortByDateDesc();
-	    		Toast.makeText(getApplicationContext(), getResources().getString(R.string.deleted)+"", Toast.LENGTH_SHORT).show();	    		
+	    		Toast.makeText(getApplicationContext(), getResources().getString(R.string.deleted)+"", Toast.LENGTH_SHORT).show();
+	    		
+	    	}else if(requestCode == IMPORT_ENTRY_REQUEST){
+				String readedFromFile = ImportExportBackup.readFromBackupFile();
+				
+				if(readedFromFile == null){
+					Toast.makeText(this, "Can't find/read from backup file: \"" 
+							+ Environment.getExternalStorageDirectory().toString() + "/"
+							+ ImportExportBackup.BACKUP_FILE_NAME +"\"", Toast.LENGTH_LONG).show();
+				}else{
+					Log.i(TAG, "Odczyt z pliku, tekst \""+readedFromFile+"\"");
+					
+					ImportExportBackup.restoreFromBackup(this, readedFromFile);
+					resultsSet = dbUtils.retrieveResultSet();
+					updateListView();
+				}
+	    		
+	    	}else if(requestCode == EXPORT_ENTRY_REQUEST){
+	    		ImportExportBackup.writeToBackupFile(ImportExportBackup.createBackup(this));
+	    		Log.i(TAG, "Zapis do pliku");	    		
 	    	}
 	    }
 	    else
@@ -199,56 +238,26 @@ public class Car_servActivity extends Activity {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent intent = new Intent(getApplicationContext(), DialogActivity.class);
 		
     	switch(item.getItemId())
-    	{    	
-    	case (Menu.FIRST):
-			String readedFromFile = ImportExportBackup.readFromBackupFile();
-    		Log.i(TAG, "Odczyt z pliku, tekst \""+readedFromFile+"\"");
-    		try {
-				JSONArray jArrayReaded = new JSONArray(readedFromFile);
-				
-				for(int i = 0; i < jArrayReaded.length(); i++){
-					JSONObject entryElement =  (JSONObject) jArrayReaded.get(i);
-					
-					String name 		= entryElement.getString("name");
-					String proffession 	= entryElement.getString("proffession");
-					Integer age 		= entryElement.getInt("age");
-					
-					Log.v(TAG, "name: " + name + ", proffession: " + proffession + ", age: " + age);
-				}
-			} catch (JSONException e1) {
-				e1.printStackTrace();
-			}
-	    	break;  
-	    	
-    	case (Menu.FIRST+1):
-	    	JSONArray jArrayAll = new JSONArray();
-	    	try {
-	    		JSONObject entry = new JSONObject();
+    	{   
+	    	// import
+	    	case (Menu.FIRST):
+				intent.putExtra(HEADER_ITEM_RES, getResources().getString(R.string.import_dialog_text));
+				intent.putExtra(ACTION_ITEM_RES, DIALOG_ACTION_IMPORT);
+				startActivityForResult(intent, IMPORT_ENTRY_REQUEST);    		
+		    	break;  
+		    	
+		    // export
+	    	case (Menu.FIRST+1):
+				intent.putExtra(HEADER_ITEM_RES, getResources().getString(R.string.export_dialog_text));
+				intent.putExtra(ACTION_ITEM_RES, DIALOG_ACTION_EXPORT);
+				startActivityForResult(intent, EXPORT_ENTRY_REQUEST);    		    		
+	    		break;    	
 	    		
-	    		entry.put("name", "Janek");	
-	    		entry.put("proffession", "cleaner");
-	    		entry.put("age", "20");	
-	    		
-	    		jArrayAll.put(entry);
-	    		
-	    		//
-	    		entry = new JSONObject();
-	    		entry.put("name", "Tomek");	
-	    		entry.put("proffession", "programmer");
-	    		entry.put("age", "27");	
-	    		
-	    		jArrayAll.put(entry);	
-	    		
-	    	} catch (JSONException e) {
-	    		e.printStackTrace();
-	    	}
-    		ImportExportBackup.writeToBackupFile(jArrayAll.toString());
-    		Log.i(TAG, "Zapis do pliku");
-    		break;    	
-    	default:
-    		return super.onOptionsItemSelected(item);
+	    	default:
+	    		return super.onOptionsItemSelected(item);
     	}
     	
     	return true;
@@ -303,8 +312,10 @@ public class Car_servActivity extends Activity {
      */
     private void updateListView()
     {
-    	listEntries.clear();    
-    	listEntries.addAll(resultsSet.getEntries());    	
+    	listEntries.clear();  
+    	if(resultsSet != null){
+    		listEntries.addAll(resultsSet.getEntries());    	
+    	}
     	this.listView.invalidateViews();    	
     }
      

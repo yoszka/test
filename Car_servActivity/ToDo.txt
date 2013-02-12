@@ -1,2 +1,4 @@
-1. Backup and restore feature
+1. Fix bug when delete entry then sort order isn't kept
 2. Add icons for items
+
+#[DONE]Backup and restore feature

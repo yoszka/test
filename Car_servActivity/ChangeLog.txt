@@ -1,1 +1,2 @@
-1.6.3 - changed dividerHeight in ListView 20sp -> 10sp
+1.5.3 - changed dividerHeight in ListView 20sp -> 10sp
+1.6.0 - Add possibility to import/export to SD card
