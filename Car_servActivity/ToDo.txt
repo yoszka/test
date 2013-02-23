@@ -1,4 +1,4 @@
-1. Fix bug when delete entry then sort order isn't kept
-2. Add icons for items
+1. Add icons for items
 
 #[DONE]Backup and restore feature
+#[DONE]Fix bug when delete entry then sort order isn't kept

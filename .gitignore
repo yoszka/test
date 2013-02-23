@@ -17,3 +17,6 @@ local.properties
 
 # Project Meta data
 .metadata/
+
+# Thumbails
+*.db

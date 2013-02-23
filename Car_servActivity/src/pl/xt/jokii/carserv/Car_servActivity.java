@@ -58,6 +58,7 @@ public class Car_servActivity extends Activity {
 	protected static CarServResultsSet resultsSet;
 	private ArrayList<CarServEntry> listEntries 		= new ArrayList<CarServEntry>();
 	private DbUtils dbUtils;
+	private SorOrder mLastSortOrder = SorOrder.DATE_ASC;
 	
 	
     @Override
@@ -178,7 +179,8 @@ public class Car_servActivity extends Activity {
 				        	carServEntryTmp.setExpired  (cursor.getInt		(cursor.getColumnIndex(CarServTableMetaData.SERVICE_EXPIRED)) == 1 );
 
 				        	resultsSet.addEnd(carServEntryTmp);
-				        	sortByDateDesc();
+//				        	sortByDateDesc();
+				        	sortLastSortOrder();
 			   	         }
 			   	         else
 			   	         {		      
@@ -196,7 +198,8 @@ public class Car_servActivity extends Activity {
     			getContentResolver().delete(Uri.withAppendedPath(CarServProviderMetaData.CarServTableMetaData.CONTENT_URI, EntryId+""), null, null);
 	    		
 	    		resultsSet.deleteEntryId(EntryId);
-	    		sortByDateDesc();
+//	    		sortByDateDesc();
+	    		sortLastSortOrder();
 	    		Toast.makeText(getApplicationContext(), getResources().getString(R.string.deleted)+"", Toast.LENGTH_SHORT).show();
 	    		
 	    	}else if(requestCode == IMPORT_ENTRY_REQUEST){
@@ -325,6 +328,7 @@ public class Car_servActivity extends Activity {
      */
     private void sortByDateDesc()
     {
+    	mLastSortOrder = SorOrder.DATE_DESC;
     	resultsSet.sortByIdDesc();
     	updateListView();
     }  
@@ -334,6 +338,7 @@ public class Car_servActivity extends Activity {
      */
     private void sortByMileageDesc()
     {
+    	mLastSortOrder = SorOrder.MILEAGE_DESC;
     	resultsSet.sortByMileageDesc();
     	updateListView();
     }
@@ -352,6 +357,7 @@ public class Car_servActivity extends Activity {
      */
     private void sortByExpiredAsc()
     {
+    	mLastSortOrder = SorOrder.EXPIRED_ASC;
     	resultsSet.sortByDateAsc();
     	updateListView();
     }    
@@ -361,5 +367,33 @@ public class Car_servActivity extends Activity {
     	super.onResume();
     	updateListView();
     }
+    
+    
+    private enum SorOrder{
+    	DATE_ASC, DATE_DESC, EXPIRED_ASC, EXPIRED_DESC, MILEAGE_DESC, MILEAGE_ASC
+    }
+    
+    
+    /**
+     * Sort last used sorting method
+     */
+    private void sortLastSortOrder(){
+    	switch(mLastSortOrder){
+    	case DATE_ASC:
+    	case DATE_DESC:
+    		sortByDateDesc();
+    		break;
+    	case EXPIRED_DESC:
+    	case EXPIRED_ASC:
+    		sortByExpiredAsc();
+    		break;
+    	case MILEAGE_DESC:
+    	case MILEAGE_ASC:
+    		sortByMileageDesc();
+    		break;
+		default:
+			break;
+    	}
+    } 
     
 }
