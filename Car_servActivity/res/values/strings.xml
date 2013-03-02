@@ -7,9 +7,11 @@
     <string name="choose_value">Wybierz typ</string>
     <string name="delete_dialog_text">Usunąć?</string>
     <string name="import_dialog_text">Zaimportować?</string>
-    <string name="export_dialog_text">Wykona kopię?</string>
+    <string name="export_dialog_text">Wykonać kopię?</string>
     <string name="btn_dialog_ok_label">OK</string>
     <string name="btn_dialog_cancel_label">Anuluj</string>
+    <string name="import_positive_confirmation">Zaimportowano</string>
+    <string name="export_positive_confirmation">Kopia utworzona</string>
     
     <string name="type">Typ</string>
     <string name="note">Notatka</string>

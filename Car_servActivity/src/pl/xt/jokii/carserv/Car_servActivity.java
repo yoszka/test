@@ -24,6 +24,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Looper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -69,7 +70,6 @@ public class Car_servActivity extends Activity {
         dbUtils = new DbUtils(getContentResolver());								// Set content resolver for DbUtils class
         this.listView = (ListView)findViewById(R.id.listView1);       
         
-        	     
     	resultsSet = dbUtils.retrieveResultSet();
     	
 		 // If empty create new empty set
@@ -211,14 +211,15 @@ public class Car_servActivity extends Activity {
 							+ ImportExportBackup.BACKUP_FILE_NAME +"\"", Toast.LENGTH_LONG).show();
 				}else{
 					Log.i(TAG, "Odczyt z pliku, tekst \""+readedFromFile+"\"");
-					
 					ImportExportBackup.restoreFromBackup(this, readedFromFile);
+					Toast.makeText(this, R.string.import_positive_confirmation, Toast.LENGTH_SHORT).show();
 					resultsSet = dbUtils.retrieveResultSet();
 					updateListView();
 				}
 	    		
 	    	}else if(requestCode == EXPORT_ENTRY_REQUEST){
 	    		ImportExportBackup.writeToBackupFile(ImportExportBackup.createBackup(this));
+	    		Toast.makeText(this, R.string.export_positive_confirmation, Toast.LENGTH_SHORT).show();
 	    		Log.i(TAG, "Zapis do pliku");	    		
 	    	}
 	    }
@@ -394,6 +395,6 @@ public class Car_servActivity extends Activity {
 		default:
 			break;
     	}
-    } 
+    }
     
 }

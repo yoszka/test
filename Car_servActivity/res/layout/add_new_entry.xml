@@ -4,7 +4,6 @@
     android:layout_height="match_parent" >
 
     <ScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/scrollView1"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
@@ -70,6 +69,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
+                android:calendarViewShown="false"
+                android:layout_marginBottom="50dp"
                 android:layout_weight="0" />
         </LinearLayout>
     </ScrollView>

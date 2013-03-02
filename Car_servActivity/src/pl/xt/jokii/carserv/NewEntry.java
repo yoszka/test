@@ -145,7 +145,9 @@ public class NewEntry extends Activity{
 	
 					 dbUtils.updateEntryDB(EntryId, carServEntry);
 					 
-					 Car_servActivity.resultsSet.updateEntry(EntryId, carServEntry);
+					 if(Car_servActivity.resultsSet != null){								// resultsSet is null when we go to edition from notification bar when event occur
+						 Car_servActivity.resultsSet.updateEntry(EntryId, carServEntry);
+					 }
 					 
 					 // Set up Alarm
 					 AlarmUtil.setAlarm(getApplicationContext(), EntryId, header, dateStamp);					 
