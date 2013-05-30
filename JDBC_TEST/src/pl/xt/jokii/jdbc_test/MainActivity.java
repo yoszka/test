@@ -68,7 +68,7 @@ public class MainActivity extends Activity {
 			
 			try {
 				//Connection connection = DriverManager.getConnection("jdbc:mysql://db_address:port/bd_name","user","passowrd");
-	        	connection = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/android971873","jokii","jostpr");
+	        	connection = DriverManager.getConnection("jdbc:mysql://db4free.net:3306/android971873","username123","password1234");
 	        	statement   = connection.createStatement();
 	        	statement.execute("INSERT INTO `proba` (`ID`, `text`) VALUES (NULL, 'z eclipsa androida');");		// use statement.execute("....."); for INSERT, UPDATE ?
 	        	result = statement.executeQuery("SELECT * FROM `proba`"); 											// use statement.executeQuery("....."); for SELECT
