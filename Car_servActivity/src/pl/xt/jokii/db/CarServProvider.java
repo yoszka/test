@@ -19,7 +19,8 @@ import android.text.TextUtils;
 import android.util.Log;
 
 public class CarServProvider extends ContentProvider{
-
+	private static final String TAG = "CarServProvider";
+	
 	// Utworzenie mapy projekcji
 	private static HashMap<String, String> sCarServProjectionMap;
 	
@@ -58,6 +59,7 @@ public class CarServProvider extends ContentProvider{
 	
 	@Override
 	public boolean onCreate() {
+		Log.v(TAG, "onCreate");
 		mDbHelper = new DatabaseHelper(getContext());
 		return true;
 	}
@@ -67,12 +69,14 @@ public class CarServProvider extends ContentProvider{
 
 		public DatabaseHelper(Context context) {
 			super(context, CarServProviderMetaData.DATABASE_NAME, null, CarServProviderMetaData.DATABASE_VERSION);
+			Log.v(TAG, "DatabaseHelper()");
 			// TODO Auto-generated constructor stub
 		}
 
 		// Tworzy bazê danych
 		@Override
 		public void onCreate(SQLiteDatabase db) {
+			Log.v(TAG, "DatabaseHelper.onCreate()");
 			db.execSQL("CREATE TABLE IF NOT EXISTS "+CarServTableMetaData.TABLE_NAME+" ("
 				+CarServProviderMetaData.CarServTableMetaData._ID+" INTEGER PRIMARY KEY, "
 				+CarServTableMetaData.SERVICE_HEADER+" VARCHAR, "
@@ -103,7 +107,7 @@ public class CarServProvider extends ContentProvider{
 	
 	@Override
 	public String getType(Uri uri) {
-		
+		Log.v(TAG, "getType()");
 		switch(sUriMatcher.match(uri))
 		{
 		case CARSERV_COLLECTION_URI_INDICATOR:

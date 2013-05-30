@@ -211,9 +211,11 @@ public class NewEntry extends Activity{
 		   	    		 data.putExtra(Car_servActivity.NEW_ENTRY_RES, EntryId);		   	    		 
 
 		   	    		 // Set up Alarm
-		   	    		 AlarmUtil.setAlarm(getApplicationContext(), EntryId, header, dateStamp);
-
-		   	    		 Toast.makeText(getApplicationContext(), getResources().getString(R.string.alarm_set_on) + dateString, Toast.LENGTH_SHORT).show();
+		   	    		 if(currentDate.getTime() < dateStamp){
+		   	    			 AlarmUtil.setAlarm(getApplicationContext(), EntryId, header, dateStamp);
+		   	    			 Toast.makeText(getApplicationContext(), getResources().getString(R.string.alarm_set_on) + dateString, Toast.LENGTH_SHORT).show();
+		   	    		 }
+		   	    		 
 		   	    		 Toast.makeText(getApplicationContext(), getResources().getString(R.string.updated_local_db)+"", Toast.LENGTH_SHORT).show();
 
 		   	    		 NewEntry.this.setResult(Activity.RESULT_OK, data);

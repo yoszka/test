@@ -4,3 +4,5 @@
 1.6.2 - Fixed bug when enter to entry edition from notification bar when event occur
 	  - Added Toast pop-up with import/export positive confirmation
 	  - Removed Month view from calendar view from display Add new / edit entry 
+1.6.3 - Fixed bug concern run event notification when add entry with today date (or earlier)
+      - Fixed NullPointerException on boot after install app, no entry add, restart device -> boot
