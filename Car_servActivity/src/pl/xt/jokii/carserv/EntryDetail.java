@@ -4,6 +4,7 @@ import java.util.Calendar;
 
 import pl.xt.jokii.db.CarServEntry;
 import pl.xt.jokii.db.CarServProviderMetaData;
+import pl.xt.jokii.db.DbUtils;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -109,6 +110,9 @@ public class EntryDetail extends Activity{
 			{
 				long updatedId = data.getLongExtra(Car_servActivity.UPDATE_ITEM_RES, -1);
 
+				if(Car_servActivity.resultsSet == null){
+					Car_servActivity.resultsSet = DbUtils.retrieveResultSet(getApplicationContext());
+				}
 				CarServEntry carServEntry = Car_servActivity.resultsSet.getEntryById(updatedId);				
 				
 				

@@ -1,25 +1,33 @@
 package pl.xt.jokii.db;
 
 import pl.xt.jokii.db.CarServProviderMetaData.CarServTableMetaData;
-import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
 
-public class DbUtils {
-	private ContentResolver contentResolver;
-	
-	
-	
+public abstract class DbUtils {
+	private static boolean DBG = false;
 	
 	/**
-	 * Constructor. Main purpose set ContentResolver
-	 * @param contentResolver
+	 * Update given entry id in data base with data from carServEntry
+	 * @param _ID			- id of entry in data base
+	 * @param carServEntry	- new values for update
 	 */
-	public DbUtils(ContentResolver contentResolver)
-	{
-		this.contentResolver = contentResolver;
+	public static void updateEntryDB(Context ctx, long id, CarServEntry carServEntry)
+	{	
+		//String strFilter = "_ID = "+id;
+		ContentValues args = new ContentValues();
+		args.put(CarServTableMetaData.SERVICE_HEADER, 	carServEntry.getHeader());
+		args.put(CarServTableMetaData.SERVICE_DATE, 	carServEntry.getDate());
+		args.put(CarServTableMetaData.SERVICE_MILEAGE,  carServEntry.getMileage());
+		args.put(CarServTableMetaData.SERVICE_TYPE, 	carServEntry.getType());
+		args.put(CarServTableMetaData.SERVICE_EXPIRED, 	(carServEntry.isExpired())?1:0 );
+		
+		if(DBG) Log.v("EXPIRED upd", ((carServEntry.isExpired())?1:0)+"");
+		
+		ctx.getContentResolver().update(Uri.withAppendedPath(CarServProviderMetaData.CarServTableMetaData.CONTENT_URI, id+""), args, null, null);			
 	}
 	
 	
@@ -30,9 +38,8 @@ public class DbUtils {
 	 * @param _ID			- id of entry in data base
 	 * @param carServEntry	- new values for update
 	 */
-	public void updateEntryDB(long id, CarServEntry carServEntry)
+	public static void insertEntryDB(Context ctx, CarServEntry carServEntry)
 	{	
-		
 		//String strFilter = "_ID = "+id;
 		ContentValues args = new ContentValues();
 		args.put(CarServTableMetaData.SERVICE_HEADER, 	carServEntry.getHeader());
@@ -40,31 +47,10 @@ public class DbUtils {
 		args.put(CarServTableMetaData.SERVICE_MILEAGE,  carServEntry.getMileage());
 		args.put(CarServTableMetaData.SERVICE_TYPE, 	carServEntry.getType());
 		args.put(CarServTableMetaData.SERVICE_EXPIRED, 	(carServEntry.isExpired())?1:0 );
-//		Log.v("EXPIRED upd", ((carServEntry.isExpired())?1:0)+"");
-		this.contentResolver.update(Uri.withAppendedPath(CarServProviderMetaData.CarServTableMetaData.CONTENT_URI, id+""), args, null, null);			
-	}
-	
-	
-	
-	
-	/**
-	 * Update given entry id in data base with data from carServEntry
-	 * @param _ID			- id of entry in data base
-	 * @param carServEntry	- new values for update
-	 */
-	public void insertEntryDB(CarServEntry carServEntry)
-	{	
 		
-		//String strFilter = "_ID = "+id;
-		ContentValues args = new ContentValues();
-		args.put(CarServTableMetaData.SERVICE_HEADER, 	carServEntry.getHeader());
-		args.put(CarServTableMetaData.SERVICE_DATE, 	carServEntry.getDate());
-		args.put(CarServTableMetaData.SERVICE_MILEAGE,  carServEntry.getMileage());
-		args.put(CarServTableMetaData.SERVICE_TYPE, 	carServEntry.getType());
-		args.put(CarServTableMetaData.SERVICE_EXPIRED, 	(carServEntry.isExpired())?1:0 );
-//		Log.v("EXPIRED new", ((carServEntry.isExpired())?1:0)+"");
-		this.contentResolver.insert(CarServProviderMetaData.CarServTableMetaData.CONTENT_URI, args);		
-//		getContentResolver()
+		if(DBG) Log.v("EXPIRED new", ((carServEntry.isExpired())?1:0)+"");
+		
+		ctx.getContentResolver().insert(CarServProviderMetaData.CarServTableMetaData.CONTENT_URI, args);		
 	}	
 	
 	
@@ -75,12 +61,12 @@ public class DbUtils {
 	* @param _ID			- elemnet id from data base
 	* @return CarServEntry - entry from DB
 	*/
-	public CarServEntry getEntryFromDB(long id)
+	public static CarServEntry getEntryFromDB(Context ctx, long id)
 	{
 		CarServEntry 	carServEntry 	= new CarServEntry();
 
 	    //Cursor cursor = baza.rawQuery("SELECT * FROM CarEvents WHERE _ID = "+id+"",null);
-	  	Cursor cursor = this.contentResolver.query(Uri.withAppendedPath(CarServProviderMetaData.CarServTableMetaData.CONTENT_URI, id+""), null, null, null, null);
+	  	Cursor cursor = ctx.getContentResolver().query(Uri.withAppendedPath(CarServProviderMetaData.CarServTableMetaData.CONTENT_URI, id+""), null, null, null, null);
 
 	    if(cursor.moveToFirst())			//Metoda zwraca FALSE jesli cursor jest pusty
 	    { 
@@ -102,18 +88,15 @@ public class DbUtils {
 	    return carServEntry;
 	}	
 	
-	
-	
 	/**
 	 * Get entries from data base and put to CarServResultsSet
 	 * @return CarServResultsSet filed with entries from data base, null if none entry was retrieved 
 	 */
-	public CarServResultsSet retrieveResultSet()
-	{
+	public static CarServResultsSet retrieveResultSet(Context ctx){
 		CarServResultsSet resultsSet = new CarServResultsSet();
 		resultsSet.init();
 		
-	   	 Cursor cursor = this.contentResolver.query(CarServProviderMetaData.CarServTableMetaData.CONTENT_URI, null, null, null, null); // wszystkie kolumny, bez kluzuli WHERE, bez WHERE argumentów, bez sortowania	       
+	   	 Cursor cursor = ctx.getContentResolver().query(CarServProviderMetaData.CarServTableMetaData.CONTENT_URI, null, null, null, null); // wszystkie kolumny, bez kluzuli WHERE, bez WHERE argumentów, bez sortowania	       
 	     
 	     if(cursor.moveToFirst())			// FALSE if cursor is empty
 	     { 
@@ -145,12 +128,11 @@ public class DbUtils {
 	}
 	
 	
-	
 	/**
 	 * Send message to external server
 	 * @param mesage
 	 */
-	public void sendViaPOST(String mesage)
+	public static void sendViaPOST(String mesage)
 	{
 		if(mesage.length() > 0)
 		{

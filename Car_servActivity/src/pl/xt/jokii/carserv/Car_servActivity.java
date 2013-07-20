@@ -2,11 +2,6 @@ package pl.xt.jokii.carserv;
 
 import java.util.ArrayList;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONStringer;
-
 import pl.xt.jokii.adapter.EventAdapter;
 import pl.xt.jokii.db.CarServEntry;
 import pl.xt.jokii.db.CarServProviderMetaData;
@@ -18,13 +13,11 @@ import pl.xt.jokii.utils.ImportExportBackup;
 
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Looper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -58,7 +51,6 @@ public class Car_servActivity extends Activity {
 	private ListView listView							= null;
 	protected static CarServResultsSet resultsSet;
 	private ArrayList<CarServEntry> listEntries 		= new ArrayList<CarServEntry>();
-	private DbUtils dbUtils;
 	private SorOrder mLastSortOrder = SorOrder.DATE_ASC;
 	
 	
@@ -67,10 +59,9 @@ public class Car_servActivity extends Activity {
     	super.onCreate(savedInstanceState);   	    	        
         setContentView(R.layout.main);
         
-        dbUtils = new DbUtils(getContentResolver());								// Set content resolver for DbUtils class
         this.listView = (ListView)findViewById(R.id.listView1);       
         
-    	resultsSet = dbUtils.retrieveResultSet();
+    	resultsSet = DbUtils.retrieveResultSet(getApplicationContext());
     	
 		 // If empty create new empty set
 		 if(resultsSet == null){
@@ -213,7 +204,7 @@ public class Car_servActivity extends Activity {
 					Log.i(TAG, "Odczyt z pliku, tekst \""+readedFromFile+"\"");
 					ImportExportBackup.restoreFromBackup(this, readedFromFile);
 					Toast.makeText(this, R.string.import_positive_confirmation, Toast.LENGTH_SHORT).show();
-					resultsSet = dbUtils.retrieveResultSet();
+					resultsSet = DbUtils.retrieveResultSet(getApplicationContext());
 					updateListView();
 				}
 	    		

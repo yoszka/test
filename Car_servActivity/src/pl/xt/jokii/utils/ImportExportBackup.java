@@ -89,7 +89,7 @@ public class ImportExportBackup {
 	 * @return
 	 */
 	public static String createBackup(Context ctx){
-		CarServResultsSet resultsSet = new DbUtils(ctx.getContentResolver()).retrieveResultSet();
+		CarServResultsSet resultsSet = DbUtils.retrieveResultSet(ctx);
 		ArrayList<CarServEntry> entries = resultsSet.getEntries();
 		JSONArray jArrayAll = new JSONArray();
 		
@@ -122,9 +122,8 @@ public class ImportExportBackup {
 	 */
 	public static void restoreFromBackup(Context ctx, String backupData){
 		ArrayList<CarServEntry> entries = getEntriesFromBackup(backupData);
-		DbUtils dbu = new DbUtils(ctx.getContentResolver());
 		for(CarServEntry entry : entries){
-			dbu.insertEntryDB(entry);
+			DbUtils.insertEntryDB(ctx, entry);
 			
 			 // Set up Alarm
 			 AlarmUtil.setAlarm(ctx, entry.getId(), entry.getHeader(), entry.getDate());

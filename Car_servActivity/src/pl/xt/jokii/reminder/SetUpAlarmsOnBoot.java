@@ -14,7 +14,7 @@ public class SetUpAlarmsOnBoot extends BroadcastReceiver{
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		CarServResultsSet resultsSet = new DbUtils(context.getContentResolver()).retrieveResultSet();
+		CarServResultsSet resultsSet = DbUtils.retrieveResultSet(context);
 		if(resultsSet != null){
 			Log.v("RECEIVER", "Boot, entries: " + resultsSet.getEntries().size());
 			

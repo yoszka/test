@@ -1,7 +1,5 @@
 package pl.xt.jokii.reminder;
 
-import java.io.IOException;
-
 import pl.xt.jokii.carserv.Car_servActivity;
 import pl.xt.jokii.db.CarServEntry;
 import pl.xt.jokii.db.DbUtils;
@@ -14,11 +12,7 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.util.Log;
-import android.widget.Toast;
 import pl.xt.jokii.carserv.R;
 
 public class ReminderAlarm extends BroadcastReceiver{
@@ -43,10 +37,9 @@ public class ReminderAlarm extends BroadcastReceiver{
 //		Toast.makeText(context, "Car_Serv: " + alarmText, Toast.LENGTH_LONG).show();
 		
 		// Make this entry EXPIRED
-		DbUtils dbUtilDriver = new DbUtils(context.getContentResolver());
-		CarServEntry entry = dbUtilDriver.getEntryFromDB(entryId);			
+		CarServEntry entry = DbUtils.getEntryFromDB(context, entryId);			
 		entry.setExpired(true);
-		dbUtilDriver.updateEntryDB(entryId, entry);
+		DbUtils.updateEntryDB(context, entryId, entry);
 		
 		// Display notification in status bar
 		notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

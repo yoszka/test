@@ -2,6 +2,7 @@ package pl.xt.jokii.carserv;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import pl.xt.jokii.db.CarServEntry;
 import pl.xt.jokii.db.CarServProviderMetaData;
@@ -31,7 +32,6 @@ public class NewEntry extends Activity{
 	private CarServEntry carServEntry = null;
 	private String[] items;
 	private Activity activity = this;
-	private DbUtils dbUtils;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,13 +40,12 @@ public class NewEntry extends Activity{
 		
 		setContentView(R.layout.add_new_entry);	
 		
-		dbUtils = new DbUtils(getContentResolver());								// Set content resolver for DbUtils class
 		Intent intent = getIntent();     
 		EntryId = intent.getLongExtra(Car_servActivity.EDIT_ENTRY_RES, 0);	
 		
 		if(0 != EntryId)
 		{
-			carServEntry = dbUtils.getEntryFromDB(EntryId);
+			carServEntry = DbUtils.getEntryFromDB(getApplicationContext(), EntryId);
 		}
 		
 		if(!Connectivity.isOnline(this))	// Check for Internet connection
@@ -143,7 +142,7 @@ public class NewEntry extends Activity{
 					 carServEntry.setDate(dateStamp);
 					 carServEntry.setExpired(currentDate.getTime() > dateStamp);
 	
-					 dbUtils.updateEntryDB(EntryId, carServEntry);
+					 DbUtils.updateEntryDB(getApplicationContext(), EntryId, carServEntry);
 					 
 					 if(Car_servActivity.resultsSet != null){								// resultsSet is null when we go to edition from notification bar when event occur
 						 Car_servActivity.resultsSet.updateEntry(EntryId, carServEntry);
@@ -174,7 +173,7 @@ public class NewEntry extends Activity{
 					 carServEntry.setMileage(mileage);
 					 carServEntry.setDate(dateStamp);
 					 carServEntry.setExpired(currentDate.getTime() > dateStamp);
-					 dbUtils.insertEntryDB(carServEntry);	
+					 DbUtils.insertEntryDB(getApplicationContext(), carServEntry);	
 					 
 					 
 					 
@@ -189,7 +188,7 @@ public class NewEntry extends Activity{
 							 str.append("DATESTAMP: "	+ dateStamp 			+ "\n");
 							 str.append("TYPE: " 		+ items[selectedType] 	+ "\n");
 							 str.append("EXPIRED: " 	+ (currentDate.getTime() > dateStamp) 	+ "\n");
-							 dbUtils.sendViaPOST(str.toString());
+							 DbUtils.sendViaPOST(str.toString());
 							 // ******* send via POST ********** end
 						 }
 						 catch (Exception e)
