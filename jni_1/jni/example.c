@@ -11,7 +11,10 @@
 
 #define APPNAME "MainActivity"	// Must point to real application name
 
-#define LOGV(text, parameters)	__android_log_print(ANDROID_LOG_VERBOSE, APPNAME, text, parameters)
+//#define LOGV(text, parameters)	__android_log_print(ANDROID_LOG_VERBOSE, APPNAME, text, parameters)
+#define LOGV(...) ((void)__android_log_print(ANDROID_LOG_VERBOSE, APPNAME, __VA_ARGS__))
+#define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO,    APPNAME, __VA_ARGS__))
+#define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, 	  APPNAME, __VA_ARGS__))
 
 
 // ******************** definitions ********************************
@@ -38,6 +41,7 @@ Java_com_example_jni1_MainActivity_nativeStringFromJava( JNIEnv* env,
 	__android_log_print(ANDROID_LOG_VERBOSE, APPNAME, "The value of 1 + 1 is %d", 1+1);
 	__android_log_print(ANDROID_LOG_VERBOSE, APPNAME, "The value NONE","");
 	LOGV("Use compact MACRO","");
+	LOGI("Use compact MACRO 2");
 
 	char arrText[255] = {};
 	strcpy(arrText, "Some native text 8 ");
@@ -64,7 +68,7 @@ jintArray
 Java_com_example_jni1_MainActivity_nativeRetArray( JNIEnv* env, jobject thiz,
 														jint size)
 {
-	LOGV("nativeRetArray() invoked in native", "");
+	LOGV("nativeRetArray() invoked in native");
 #define START 0
 
 	jint* primitiveArray = createPrimitiveIntArray(size);				// Get primitive int array
